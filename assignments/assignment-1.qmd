@@ -5,11 +5,83 @@ title: "Assignment 1"
 # Assignment 1
 
 ```{r}
-1 + 1
 ```
 
-My first assignment has two parts.
+Part 3
 
-## (a)
+**a) Seminar Summary: Data Science and Industrial Engineering Insights**[^1]
 
-## (b)
+[^1]: Data Analytics dersim için Veri Bilimi ve Endüstri Mühendisliği Üzerine Sohbetler adlı bir seminer videosu izledim. Video özetini çıkarabilmek için eşzamanlı olarak bazı notlar aldım. Aşağıda ilettiğim yazıyı kafamda toparlayabilmem için anlaşılır ve akıcı bir ingilizce ile düzenlemem gerekiyor. Öncelikle bilgi hatası varsa bana bunları söyle, ardından istediğim metni bana toparlayarak ver. Analytics 4 ana başlıkta toplanıyor. Descriptive elimizdeki dataları yorumlayarak temel ve kıyasla daha az kompleks analiz anlamına gelirken devamında nedenlerini araştıracağımız diagnostic analiz, daha sonrasında gelecek için tahminde bulunduğumuz predictive analytics ve son olarak da aksiyon suggestionı yapmamızı sağlayan analiz de prescriptive analytics gittikçe value ve complexityleri artarak ilerliyor. 
+
+    Belli konuların birbirine nasıl bağlandığını anlamanın yaptığımız işleri tam olarak anlayabilmemiz için gerekli olduğunu söylüyor. 
+
+    Problemin, kpi’ların quantifiable bir şekilde son kullanıcıya tanımlanması önemli. 
+
+    Modellerin çözümlerinin iyiliğinden çok son kullanıcıya ulaştırabilmek ve feedback alabilmek önemlidir. Bunun için dikkat edilmesi gereken kriterler vardır. User interface bu konuda önemlidir. 
+
+    Standart dil (quantifiable KPI)lar ve early feedbackler önemlidir.
+
+Data analytics is categorized into four main stages, each increasing in complexity and business value. It begins with **Descriptive Analytics**, which focuses on interpreting historical data. This is followed by **Diagnostic Analytics** to understand the root causes of events. Then, **Predictive Analytics** uses this data to forecast future trends. Finally, **Prescriptive Analytics** provides actionable suggestions and optimization to guide decision-making.
+
+For a data professional to truly understand their impact, they must connect these technical steps to the broader business context. The core of any project lies in defining the problem and its **Key Performance Indicators (KPIs)** in a **quantifiable** manner for the end-user.
+
+The seminar highlights that the success of a model is not just measured by its mathematical accuracy, but by its **delivery and adoption** by the user. Several criteria are essential for this bridge:
+
+-   **Explainability & Transparency:** Solutions that are easy to explain are more useful in a business environment.
+
+-   **Quantifiable Results:** It is crucial to mathematically demonstrate the power of a solution. This can be achieved by creating charts that compare current KPIs against improvements or by running different scenario analysis to show the logic behind the results.
+
+-   **User Interface (UI) & Feedback:** A simple, clean UI is vital. Using a "standard language" (standardized KPIs) and gathering early feedback ensures the model meets the user's actual needs.
+
+**b)** **Open-Ended Question**
+
+How can we finish with referring back to our problem definiton? Give one example.
+
+Answer: We can demonstrate how much KPI improvement is achieved./ We can compare scenarios and run what-ifs...
+
+**Multiple Choice Question**
+
+Which type of analytics answers the question "What should we do?"
+
+A\) Descriptive Analytics
+
+B\) Diagnostic Analytics
+
+C\) Predictive Analytics
+
+D\) Prescriptive Analytics 
+
+Answer: D) Prescriptive Analytics
+
+Part 4[^2]
+
+[^2]: The prompt I used for the last part: How can I write the number of NA values per column, sorted from largest to smallest (display the top 8 columns)
+
+```{r}
+rm(list = ls()) # bellek temizlenmediginde duzgun calismayabiliyor
+library(dslabs)
+
+my_first <- "SUDE"
+my_birth_year <- 2004
+
+
+k <- (nchar(my_first) + my_birth_year) %% 15 + 8
+
+if (k %% 2) {
+  print(tail(polls_us_election_2016, k))
+} else {
+  print(head(polls_us_election_2016, k))
+}
+
+#total number of NA calculation
+total_na <- sum(is.na(polls_us_election_2016))
+print(total_na)
+
+#NA per column
+na_counts <- colSums(is.na(polls_us_election_2016))
+                      
+sorted_na <- sort(na_counts, decreasing = TRUE)
+
+print(head(sorted_na, 8))
+
+```

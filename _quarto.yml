@@ -3,7 +3,7 @@ project:
   output-dir: docs
 
 website:
-  title: "[Student/Group Full Name]'s Analytics Lab"
+  title: "Sude's Analytics Lab"
   navbar:
     search: true
     left:
@@ -22,11 +22,11 @@ website:
             
     tools:
       - icon: github
-        href: https://twitter.com
+        href: https://github.com/sudenakisci
       - icon: twitter
-        href: https://twitter.com
+        href: https://twitter.com/sudenakisci
       - icon: linkedin
-        href: https://linkedin.com
+        href: https://www.linkedin.com/in/sude-naki%C5%9Fci-6a0592254?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app
 
   sidebar:
     - title: "Assignments"
