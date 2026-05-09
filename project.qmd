@@ -1,14 +1,20 @@
 ---
-title: "Our Course Project"
-sidebar: false 
+title: "The Tourism Scissors: Analyzing the Impact of Economic Indicators on Domestic vs. International Passenger Traffic in Turkey’s Tourism Hubs"
+sidebar: true 
 ---
 
-data(polls_us_election_2016)
+I'm honored to be a member of the \[FlyNomics\] project team.
 
-I'm honored to be a member of the \[group name\] project team.
-
-Below, you'll find a brief summary of our project. To access a detailed project description, please go to [https://\[your-project-url\]](#0){.uri}.
+Below, you'll find a brief summary of our project. To access a detailed project description, please go to [https://\[emu-hacettepe-analytics/flynomics\]](#0){.uri}.
 
 **Summary**
 
-\[provide a biref summary of your project\]
+```{r setup, include=FALSE}
+library(readxl)
+library(dplyr)
+library(ggplot2)
+
+economic_indicators <- read_excel("data/TCMB_DATA.XLSX")
+passengers<- read_excel("data/DHMI_Data.xlsx")
+```
+
