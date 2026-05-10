@@ -3,18 +3,31 @@ title: "The Tourism Scissors: Analyzing the Impact of Economic Indicators on Dom
 sidebar: true 
 ---
 
-I'm honored to be a member of the \[FlyNomics\] project team.
+I'm honored to be a member of the **FlyNomics** project team.
 
-Below, you'll find a brief summary of our project. To access a detailed project description, please go to [https://\[emu-hacettepe-analytics/flynomics\]](#0){.uri}.
+Below, you'll find a brief summary of our project. To access a detailed project description, please go to [emu-hacettepe-analytics/flynomics](https://github.com/emu-hacettepe-analytics/emu430-fall2024-team-flynomics/).
 
 **Summary**
 
-```{r setup, include=FALSE}
-library(readxl)
-library(dplyr)
-library(ggplot2)
+As part of my EMU 430 course, our team, "Flynomics," decided to dive into a highly relevant and visible issue: the shifting dynamics of travel in Türkiye. We call our project the **"Tourism Scissors"** analysis.
 
-economic_indicators <- read_excel("data/TCMB_DATA.XLSX")
-passengers<- read_excel("data/DHMI_Data.xlsx")
-```
+### What is the "Tourism Scissors"?
+If you live in Türkiye, you might have noticed a recent trend: while coastal airports and hotels are packed with international tourists, local vacationers are becoming a rare sight. We wanted to see if the data actually backed up this everyday observation. 
 
+The "scissors" refers to the X-shaped divergence we found in our graphs. Especially after 2021, as international flight demand continued to surge, domestic flight demand sharply collapsed. 
+
+### The Data Behind the Story
+To keep our analysis grounded in reality, we couldn't just look at passenger numbers; we needed to pair mobility data with macroeconomic indicators. We processed and visualized everything in R using `dplyr` and `ggplot2`.
+
+Our main data sources were:
+* **DHMI (State Airports Authority):** We filtered monthly passenger traffic specifically for major holiday hubs (Antalya, Izmir, Dalaman, and Milas-Bodrum).
+* **CBRT EVDS (Central Bank of Türkiye):** We pulled the average monthly USD/TRY exchange rate and inflation (CPI) figures to represent economic pressure.
+
+### Our Key Findings
+After cleaning the data and running our Exploratory Data Analysis (EDA), a few striking realities emerged:
+
+1.  **The Peak Season Divergence:** The "scissors" effect is most visible during the summer months. It clearly illustrates how domestic citizens are essentially priced out of high-season tourism.
+2.  **The Exchange Rate Impact:** There is a strong, direct relationship between the rising USD/TRY exchange rate and the drop in domestic travel volumes. While the depreciating Lira attracts foreign tourists, it acts as a massive barrier for locals.
+3.  **Winter Travel is Resilient:** Interestingly, winter passenger trends display a much more parallel trajectory. This suggests that baseline travel (like business or essential trips) is much less elastic and less affected by economic shocks compared to leisure travel.
+
+This project was a great opportunity to apply data analytics to a real-world problem. It clearly showed us that behind every macroeconomic statistic, there is a measurable impact on human behavior and mobility.

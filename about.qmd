@@ -21,4 +21,4 @@ sidebar: false
 
 # CV
 
-[Download my CV (PDF)](CV.pdf)
+[Download my CV (PDF)](sudenakisci_cv.pdf)
