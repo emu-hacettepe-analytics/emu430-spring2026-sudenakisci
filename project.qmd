@@ -30,4 +30,4 @@ After cleaning the data and running our Exploratory Data Analysis (EDA), a few s
 2.  **The Exchange Rate Impact:** There is a strong, direct relationship between the rising USD/TRY exchange rate and the drop in domestic travel volumes. While the depreciating Lira attracts foreign tourists, it acts as a massive barrier for locals.
 3.  **Winter Travel is Resilient:** Interestingly, winter passenger trends display a much more parallel trajectory. This suggests that baseline travel (like business or essential trips) is much less elastic and less affected by economic shocks compared to leisure travel.
 
-This project was a great opportunity to apply data analytics to a real-world problem. It clearly showed us that behind every macroeconomic statistic, there is a measurable impact on human behavior and mobility.
+This project was a great opportunity to apply data analytics to a real-world problem. It clearly showed us that behind every macroeconomic statistic, there is a measurable impact on human behavior and mobility
