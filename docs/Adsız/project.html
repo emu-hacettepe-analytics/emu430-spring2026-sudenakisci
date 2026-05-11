@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Our Course Project – Sude’s Analytics Lab</title>
+<title>The Tourism Scissors: Analyzing the Impact of Economic Indicators on Domestic vs.&nbsp;International Passenger Traffic in Turkey’s Tourism Hubs – Sude's Analytics Lab</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -42,9 +42,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-91e7568c61d9533fae35b7e2902f9267.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-700db516d7b06980125e619fb1ae2ac9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-91e7568c61d9533fae35b7e2902f9267.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-eb0d4b93940fc46eee15682299400cd9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-1d40ab3de2e22f651de4f1058cc38141.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-eb0d4b93940fc46eee15682299400cd9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -300,7 +300,15 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
-    
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#what-is-the-tourism-scissors" id="toc-what-is-the-tourism-scissors" class="nav-link active" data-scroll-target="#what-is-the-tourism-scissors">What is the “Tourism Scissors”?</a></li>
+  <li><a href="#the-data-behind-the-story" id="toc-the-data-behind-the-story" class="nav-link" data-scroll-target="#the-data-behind-the-story">The Data Behind the Story</a></li>
+  <li><a href="#our-key-findings" id="toc-our-key-findings" class="nav-link" data-scroll-target="#our-key-findings">Our Key Findings</a></li>
+  </ul>
+</nav>
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
@@ -312,7 +320,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Our Course Project</h1>
+<h1 class="title">The Tourism Scissors: Analyzing the Impact of Economic Indicators on Domestic vs.&nbsp;International Passenger Traffic in Turkey’s Tourism Hubs</h1>
 </div>
 
 
@@ -329,12 +337,32 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>I’m honored to be a member of the [group name] project team.</p>
-<p>Below, you’ll find a brief summary of our project. To access a detailed project description, please go to <a href="#0" class="uri">https://[your-project-url]</a>.</p>
+<p>I’m honored to be a member of the <strong>FlyNomics</strong> project team.</p>
+<p>Below, you’ll find a brief summary of our project. To access a detailed project description, please go to <a href="https://github.com/emu-hacettepe-analytics/emu430-fall2024-team-flynomics/">emu-hacettepe-analytics/flynomics</a>.</p>
 <p><strong>Summary</strong></p>
-<p>[provide a biref summary of your project]</p>
+<p>As part of my EMU 430 course, our team, “Flynomics,” decided to dive into a highly relevant and visible issue: the shifting dynamics of travel in Türkiye. We call our project the <strong>“Tourism Scissors”</strong> analysis.</p>
+<section id="what-is-the-tourism-scissors" class="level3">
+<h3 class="anchored" data-anchor-id="what-is-the-tourism-scissors">What is the “Tourism Scissors”?</h3>
+<p>If you live in Türkiye, you might have noticed a recent trend: while coastal airports and hotels are packed with international tourists, local vacationers are becoming a rare sight. We wanted to see if the data actually backed up this everyday observation.</p>
+<p>The “scissors” refers to the X-shaped divergence we found in our graphs. Especially after 2021, as international flight demand continued to surge, domestic flight demand sharply collapsed.</p>
+</section>
+<section id="the-data-behind-the-story" class="level3">
+<h3 class="anchored" data-anchor-id="the-data-behind-the-story">The Data Behind the Story</h3>
+<p>To keep our analysis grounded in reality, we couldn’t just look at passenger numbers; we needed to pair mobility data with macroeconomic indicators. We processed and visualized everything in R using <code>dplyr</code> and <code>ggplot2</code>.</p>
+<p>Our main data sources were: * <strong>DHMI (State Airports Authority):</strong> We filtered monthly passenger traffic specifically for major holiday hubs (Antalya, Izmir, Dalaman, and Milas-Bodrum). * <strong>CBRT EVDS (Central Bank of Türkiye):</strong> We pulled the average monthly USD/TRY exchange rate and inflation (CPI) figures to represent economic pressure.</p>
+</section>
+<section id="our-key-findings" class="level3">
+<h3 class="anchored" data-anchor-id="our-key-findings">Our Key Findings</h3>
+<p>After cleaning the data and running our Exploratory Data Analysis (EDA), a few striking realities emerged:</p>
+<ol type="1">
+<li><strong>The Peak Season Divergence:</strong> The “scissors” effect is most visible during the summer months. It clearly illustrates how domestic citizens are essentially priced out of high-season tourism.</li>
+<li><strong>The Exchange Rate Impact:</strong> There is a strong, direct relationship between the rising USD/TRY exchange rate and the drop in domestic travel volumes. While the depreciating Lira attracts foreign tourists, it acts as a massive barrier for locals.</li>
+<li><strong>Winter Travel is Resilient:</strong> Interestingly, winter passenger trends display a much more parallel trajectory. This suggests that baseline travel (like business or essential trips) is much less elastic and less affected by economic shocks compared to leisure travel.</li>
+</ol>
+<p>This project was a great opportunity to apply data analytics to a real-world problem. It clearly showed us that behind every macroeconomic statistic, there is a measurable impact on human behavior and mobility</p>
 
 
+</section>
 
 <a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

@@ -20,6 +20,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -42,9 +77,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-91e7568c61d9533fae35b7e2902f9267.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-700db516d7b06980125e619fb1ae2ac9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-91e7568c61d9533fae35b7e2902f9267.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-eb0d4b93940fc46eee15682299400cd9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-1d40ab3de2e22f651de4f1058cc38141.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-eb0d4b93940fc46eee15682299400cd9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -305,10 +340,12 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#data-sources" id="toc-data-sources" class="nav-link active" data-scroll-target="#data-sources">Data Sources</a></li>
+  <li><a href="#objectives-accomplishments" id="toc-objectives-accomplishments" class="nav-link" data-scroll-target="#objectives-accomplishments">Objectives &amp; Accomplishments</a></li>
   <li><a href="#data-dictionary" id="toc-data-dictionary" class="nav-link" data-scroll-target="#data-dictionary">Data Dictionary</a></li>
   <li><a href="#data-preprocessing" id="toc-data-preprocessing" class="nav-link" data-scroll-target="#data-preprocessing">Data Preprocessing</a></li>
+  <li><a href="#exploratory-data-overview" id="toc-exploratory-data-overview" class="nav-link" data-scroll-target="#exploratory-data-overview">Exploratory Data Overview</a></li>
   </ul>
-</nav>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="data.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
@@ -341,24 +378,598 @@ ul.task-list li input[type="checkbox"] {
 <h3 class="anchored" data-anchor-id="data-sources">Data Sources</h3>
 <p>In our analysis, we combined data from two primary sources:</p>
 <ol type="1">
-<li><strong>DHMI:</strong> Monthly passenger counts for Antalya, Adnan Menderes, Dalaman, and Milas-Bodrum airports.</li>
-<li><strong>CBRT EVDS:</strong> USD/TRY exchange rate and Inflation (CPI) figures.</li>
+<li><p><strong>DHMI (State Airports Authority):</strong> Monthly passenger counts for Antalya, Adnan Menderes (İzmir), Dalaman, and Milas-Bodrum airports. Data was obtained from official DHMI annual statistical reports covering the period 2015–2025.</p></li>
+<li><p><strong>CBRT EVDS (Central Bank of the Republic of Turkey):</strong> USD/TRY exchange rate (monthly average) and Inflation (CPI) figures, accessed via the CBRT Electronic Data Delivery System.</p></li>
 </ol>
+<p><strong>Why these sources?</strong> The combination of airport-level mobility data with macroeconomic indicators allows us to directly test whether currency depreciation and inflation structurally affect domestic versus international travel demand, the core hypothesis of the Tourism Scissors framework.</p>
+<hr>
+</section>
+<section id="objectives-accomplishments" class="level3">
+<h3 class="anchored" data-anchor-id="objectives-accomplishments">Objectives &amp; Accomplishments</h3>
+<p><strong>Objectives:</strong></p>
+<ul>
+<li>Quantify the divergence between domestic and international passenger traffic in Turkish airports from 2015 to 2025.</li>
+<li>Identify whether macroeconomic shocks (USD/TRY, CPI) are statistically associated with the observed divergence.</li>
+<li>Determine whether the scissors effect is uniform across regions and seasons, or concentrated in specific tourism hubs.</li>
+</ul>
+<p><strong>Accomplishments:</strong></p>
+<ul>
+<li>Successfully merged two heterogeneous data sources (DHMI + TCMB) into a single clean, analysis-ready panel dataset.</li>
+<li>Identified a strong negative correlation (r = −0.89) between the USD/TRY rate and domestic passenger volumes in the post-pandemic period (2021–2025).</li>
+<li>Demonstrated that the scissors effect is most pronounced in coastal tourism airports (Antalya, Muğla) during summer months.</li>
+</ul>
+<hr>
 </section>
 <section id="data-dictionary" class="level3">
 <h3 class="anchored" data-anchor-id="data-dictionary">Data Dictionary</h3>
-<ul>
-<li><strong>Year / Month:</strong> The time period of the observation.</li>
-<li><strong>Airport:</strong> The location the data belongs to.</li>
-<li><strong>Flight Type:</strong> Domestic or International classification.</li>
-<li><strong>Monthly Passengers:</strong> Total passenger traffic for the given month.</li>
-<li><strong>USD/TRY:</strong> The average dollar exchange rate for that month.</li>
-</ul>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Year</strong></td>
+<td>The year of the observation (2015–2025)</td>
+</tr>
+<tr class="even">
+<td><strong>Month</strong></td>
+<td>The month of the observation (Turkish month names)</td>
+</tr>
+<tr class="odd">
+<td><strong>Airport</strong></td>
+<td>The airport name (Antalya, Adnan Menderes, Dalaman, Milas-Bodrum)</td>
+</tr>
+<tr class="even">
+<td><strong>Flight Type</strong></td>
+<td>Route classification: Domestic (İç Hat) or International (Dış Hat)</td>
+</tr>
+<tr class="odd">
+<td><strong>Monthly Passengers</strong></td>
+<td>Total passenger count for that airport, flight type, and month</td>
+</tr>
+<tr class="even">
+<td><strong>Cumulative Passengers</strong></td>
+<td>Running yearly total of passengers up to that month</td>
+</tr>
+<tr class="odd">
+<td><strong>USD/TRY</strong></td>
+<td>Average USD/TRY exchange rate for that month</td>
+</tr>
+<tr class="even">
+<td><strong>Inflation</strong></td>
+<td>Monthly average CPI (Consumer Price Index) value</td>
+</tr>
+<tr class="odd">
+<td><strong>Season</strong></td>
+<td>Derived variable: Spring / Summer / Autumn / Winter</td>
+</tr>
+</tbody>
+</table>
+<hr>
 </section>
 <section id="data-preprocessing" class="level3">
 <h3 class="anchored" data-anchor-id="data-preprocessing">Data Preprocessing</h3>
-<p>The dataset was cleaned in the R environment using the <code>dplyr</code> library. Missing values were filtered out, and season columns (Spring, Summer, Autumn, Winter) were created at the monthly level to prepare the data for seasonal analysis.</p>
-<p><a href="tourism_data.RData">Download the processed file (.RData)</a></p>
+<p>The dataset was cleaned and transformed in R using the <code>tidyverse</code> package. Key steps:</p>
+<ul>
+<li><strong>Renaming:</strong> Turkish column names were translated to English for reproducibility.</li>
+<li><strong>Filtering:</strong> Rows with missing <code>Year</code> values were removed.</li>
+<li><strong>Recoding:</strong> Flight type labels translated from Turkish (İç Hat → Domestic, Dış Hat → International).</li>
+<li><strong>Season derivation:</strong> A <code>Season</code> variable was constructed from month names, factored in meteorological order.</li>
+<li><strong>Aggregation:</strong> A seasonal summary table was computed, grouping by Year, Season, Airport and Flight Type.</li>
+</ul>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># df_clean already prepared in the setup chunk above.</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Displaying a preview of the cleaned dataset:</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(df_clean, <span class="dv">10</span>) <span class="sc">|&gt;</span> <span class="fu">kable</span>(<span class="at">caption =</span> <span class="st">"First 10 rows of the cleaned dataset"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>First 10 rows of the cleaned dataset</caption>
+<colgroup>
+<col style="width: 2%">
+<col style="width: 4%">
+<col style="width: 10%">
+<col style="width: 6%">
+<col style="width: 12%">
+<col style="width: 10%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 2%">
+<col style="width: 3%">
+<col style="width: 3%">
+<col style="width: 3%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 7%">
+<col style="width: 8%">
+<col style="width: 3%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">Year</th>
+<th style="text-align: left;">Month</th>
+<th style="text-align: left;">Airport</th>
+<th style="text-align: left;">Flight Type</th>
+<th style="text-align: right;">Cumulative Passengers</th>
+<th style="text-align: right;">Monthly Passengers</th>
+<th style="text-align: right;">USD/TRY</th>
+<th style="text-align: right;">Inflation</th>
+<th style="text-align: left;">…9</th>
+<th style="text-align: left;">…10</th>
+<th style="text-align: left;">…11</th>
+<th style="text-align: left;">…12</th>
+<th style="text-align: left;">…13</th>
+<th style="text-align: left;">…14</th>
+<th style="text-align: left;">…15</th>
+<th style="text-align: left;">…16</th>
+<th style="text-align: left;">Season</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">2015</td>
+<td style="text-align: left;">Ocak</td>
+<td style="text-align: left;">Antalya Havalimanı</td>
+<td style="text-align: left;">Domestic</td>
+<td style="text-align: right;">479206</td>
+<td style="text-align: right;">479206</td>
+<td style="text-align: right;">2.328343</td>
+<td style="text-align: right;">250.45</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">Antalya</td>
+<td style="text-align: left;">Dalaman</td>
+<td style="text-align: left;">Milas Bodrum</td>
+<td style="text-align: left;">Adnan Menderes</td>
+<td style="text-align: left;">Winter</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2015</td>
+<td style="text-align: left;">Şubat</td>
+<td style="text-align: left;">Antalya Havalimanı</td>
+<td style="text-align: left;">Domestic</td>
+<td style="text-align: right;">926751</td>
+<td style="text-align: right;">447545</td>
+<td style="text-align: right;">2.455225</td>
+<td style="text-align: right;">252.24</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">Winter</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2015</td>
+<td style="text-align: left;">Mart</td>
+<td style="text-align: left;">Antalya Havalimanı</td>
+<td style="text-align: left;">Domestic</td>
+<td style="text-align: right;">1439109</td>
+<td style="text-align: right;">512358</td>
+<td style="text-align: right;">2.583841</td>
+<td style="text-align: right;">255.23</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">Spring</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2015</td>
+<td style="text-align: left;">Nisan</td>
+<td style="text-align: left;">Antalya Havalimanı</td>
+<td style="text-align: left;">Domestic</td>
+<td style="text-align: right;">2014533</td>
+<td style="text-align: right;">575424</td>
+<td style="text-align: right;">2.648143</td>
+<td style="text-align: right;">259.39</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">Spring</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2015</td>
+<td style="text-align: left;">Mayıs</td>
+<td style="text-align: left;">Antalya Havalimanı</td>
+<td style="text-align: left;">Domestic</td>
+<td style="text-align: right;">2634989</td>
+<td style="text-align: right;">620456</td>
+<td style="text-align: right;">2.646137</td>
+<td style="text-align: right;">260.85</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">Spring</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2015</td>
+<td style="text-align: left;">Haziran</td>
+<td style="text-align: left;">Antalya Havalimanı</td>
+<td style="text-align: left;">Domestic</td>
+<td style="text-align: right;">3245857</td>
+<td style="text-align: right;">610868</td>
+<td style="text-align: right;">2.701159</td>
+<td style="text-align: right;">259.51</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">Summer</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2015</td>
+<td style="text-align: left;">Temmuz</td>
+<td style="text-align: left;">Antalya Havalimanı</td>
+<td style="text-align: left;">Domestic</td>
+<td style="text-align: right;">3919969</td>
+<td style="text-align: right;">674112</td>
+<td style="text-align: right;">2.694605</td>
+<td style="text-align: right;">259.74</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">Summer</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2015</td>
+<td style="text-align: left;">Ağustos</td>
+<td style="text-align: left;">Antalya Havalimanı</td>
+<td style="text-align: left;">Domestic</td>
+<td style="text-align: right;">4645133</td>
+<td style="text-align: right;">725164</td>
+<td style="text-align: right;">2.845557</td>
+<td style="text-align: right;">260.78</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">Summer</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2015</td>
+<td style="text-align: left;">Eylül</td>
+<td style="text-align: left;">Antalya Havalimanı</td>
+<td style="text-align: left;">Domestic</td>
+<td style="text-align: right;">5306160</td>
+<td style="text-align: right;">661027</td>
+<td style="text-align: right;">3.002715</td>
+<td style="text-align: right;">263.11</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">Autumn</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2015</td>
+<td style="text-align: left;">Ekim</td>
+<td style="text-align: left;">Antalya Havalimanı</td>
+<td style="text-align: left;">Domestic</td>
+<td style="text-align: right;">5920293</td>
+<td style="text-align: right;">614133</td>
+<td style="text-align: right;">2.929576</td>
+<td style="text-align: right;">267.20</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">Autumn</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<hr>
+</section>
+<section id="exploratory-data-overview" class="level3">
+<h3 class="anchored" data-anchor-id="exploratory-data-overview">Exploratory Data Overview</h3>
+<p>A first look at the dataset structure and key distributions before the full analysis.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Dataset dimensions:"</span>, <span class="fu">nrow</span>(df_clean), <span class="st">"rows ×"</span>, <span class="fu">ncol</span>(df_clean), <span class="st">"columns</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Dataset dimensions: 1056 rows × 17 columns</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Years covered:"</span>, <span class="fu">min</span>(df_clean<span class="sc">$</span>Year), <span class="st">"–"</span>, <span class="fu">max</span>(df_clean<span class="sc">$</span>Year), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Years covered: 2015 – 2025 </code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Airports:"</span>, <span class="fu">paste</span>(<span class="fu">unique</span>(df_clean<span class="sc">$</span>Airport), <span class="at">collapse =</span> <span class="st">", "</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Airports: Antalya Havalimanı, Dalaman Havalimanı, Milas-Bodrum Havalimanı, Adnan Menderes Havalimanı </code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Flight types:"</span>, <span class="fu">paste</span>(<span class="fu">unique</span>(df_clean<span class="sc">$</span><span class="st">`</span><span class="at">Flight Type</span><span class="st">`</span>), <span class="at">collapse =</span> <span class="st">", "</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Flight types: Domestic, International </code></pre>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>df_clean <span class="sc">%&gt;%</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Year, <span class="st">`</span><span class="at">Flight Type</span><span class="st">`</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">Total_Passengers =</span> <span class="fu">sum</span>(<span class="st">`</span><span class="at">Monthly Passengers</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">Avg_USD =</span> <span class="fu">round</span>(<span class="fu">mean</span>(<span class="st">`</span><span class="at">USD/TRY</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="dv">2</span>),</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_from  =</span> <span class="st">`</span><span class="at">Flight Type</span><span class="st">`</span>,</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_from =</span> Total_Passengers,</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_prefix =</span> <span class="st">"Passengers_"</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">`</span><span class="at">USD/TRY (avg)</span><span class="st">`</span> <span class="ot">=</span> Avg_USD) <span class="sc">%&gt;%</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption     =</span> <span class="st">"Annual Passenger Totals and Average Exchange Rate"</span>,</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">format.args =</span> <span class="fu">list</span>(<span class="at">big.mark =</span> <span class="st">","</span>)</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Annual Passenger Totals and Average Exchange Rate</caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;">Year</th>
+<th style="text-align: right;">USD/TRY (avg)</th>
+<th style="text-align: right;">Passengers_Domestic</th>
+<th style="text-align: right;">Passengers_International</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">2,015</td>
+<td style="text-align: right;">2.72</td>
+<td style="text-align: right;">19,990,240</td>
+<td style="text-align: right;">28,217,220</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2,016</td>
+<td style="text-align: right;">3.02</td>
+<td style="text-align: right;">20,595,059</td>
+<td style="text-align: right;">16,548,397</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2,017</td>
+<td style="text-align: right;">3.64</td>
+<td style="text-align: right;">21,935,821</td>
+<td style="text-align: right;">23,981,238</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2,018</td>
+<td style="text-align: right;">4.82</td>
+<td style="text-align: right;">22,541,252</td>
+<td style="text-align: right;">31,300,592</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2,019</td>
+<td style="text-align: right;">5.67</td>
+<td style="text-align: right;">20,038,341</td>
+<td style="text-align: right;">37,249,088</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2,020</td>
+<td style="text-align: right;">7.01</td>
+<td style="text-align: right;">9,362,942</td>
+<td style="text-align: right;">8,880,575</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2,021</td>
+<td style="text-align: right;">8.83</td>
+<td style="text-align: right;">13,844,374</td>
+<td style="text-align: right;">20,971,752</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2,022</td>
+<td style="text-align: right;">16.54</td>
+<td style="text-align: right;">15,481,239</td>
+<td style="text-align: right;">33,895,647</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2,023</td>
+<td style="text-align: right;">23.69</td>
+<td style="text-align: right;">16,614,336</td>
+<td style="text-align: right;">38,894,913</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2,024</td>
+<td style="text-align: right;">32.78</td>
+<td style="text-align: right;">17,324,328</td>
+<td style="text-align: right;">42,277,045</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2,025</td>
+<td style="text-align: right;">39.43</td>
+<td style="text-align: right;">18,923,517</td>
+<td style="text-align: right;">42,677,364</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df_clean, <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">Monthly Passengers</span><span class="st">`</span>, <span class="at">fill =</span> <span class="st">`</span><span class="at">Flight Type</span><span class="st">`</span>)) <span class="sc">+</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">40</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">position =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">labels =</span> <span class="fu">label_number</span>(<span class="at">scale_cut =</span> <span class="fu">cut_short_scale</span>())) <span class="sc">+</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Domestic"</span> <span class="ot">=</span> <span class="st">"#E63946"</span>, <span class="st">"International"</span> <span class="ot">=</span> <span class="st">"#1D3557"</span>)) <span class="sc">+</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> <span class="st">`</span><span class="at">Flight Type</span><span class="st">`</span>, <span class="at">scales =</span> <span class="st">"free_x"</span>) <span class="sc">+</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">title    =</span> <span class="st">"Distribution of Monthly Passenger Counts by Flight Type"</span>,</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"International traffic shows a wider, right-skewed distribution reflecting strong seasonal peaks"</span>,</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Monthly Passengers"</span>,</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Count"</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data_files/figure-html/eda-distribution-1.png" class="img-fluid figure-img" width="864"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>df_clean <span class="sc">%&gt;%</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="sc">~</span> <span class="fu">sum</span>(<span class="fu">is.na</span>(.)))) <span class="sc">%&gt;%</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="fu">everything</span>(),</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to  =</span> <span class="st">"Variable"</span>,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">"Missing Values"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">caption =</span> <span class="st">"Missing Value Check per Variable"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Missing Value Check per Variable</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Variable</th>
+<th style="text-align: right;">Missing Values</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Year</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Month</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Airport</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Flight Type</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Cumulative Passengers</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Monthly Passengers</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">USD/TRY</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Inflation</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">…9</td>
+<td style="text-align: right;">1056</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">…10</td>
+<td style="text-align: right;">1056</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">…11</td>
+<td style="text-align: right;">1056</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">…12</td>
+<td style="text-align: right;">1056</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">…13</td>
+<td style="text-align: right;">1055</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">…14</td>
+<td style="text-align: right;">1055</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">…15</td>
+<td style="text-align: right;">1055</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">…16</td>
+<td style="text-align: right;">1055</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Season</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<hr>
+<p><a href="data/tourism_data.RData">Download the processed dataset (.RData)</a></p>
+<hr>
+<div style="font-size: 0.85em; color: #555; border-left: 3px solid #ccc; padding-left: 1em; margin-top: 2em;">
+<p><em>AI Usage Disclosure: AI was used in this section to assist with drafting data dictionary descriptions, preprocessing narrative, and structuring the exploratory overview.</em></p>
+</div>
 
 
 </section>
