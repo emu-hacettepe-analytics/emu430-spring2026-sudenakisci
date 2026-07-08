@@ -5,7 +5,7 @@ sidebar: false
 
 # Education
 
--   B.S., Industrial Engineering, Hacettepe University, Turkey, 2022-ongoing
+- B.S., Industrial Engineering, Hacettepe University, Turkey, 2022-ongoing
 
 # Work Experience
 
@@ -15,9 +15,11 @@ sidebar: false
 
 ## Internships
 
-1.  GEMAK, position: Intern, year: 2025
+1.  GEMAK, position: Intern, year: summer 2025
 
-2.  TAI, position: Long Term Intern, year : 2025-ongoing
+2.  TAI, position: Long Term Intern, year : 2025-2026
+
+3.  TAI, position: Intern, year: summer 2026
 
 # CV
 

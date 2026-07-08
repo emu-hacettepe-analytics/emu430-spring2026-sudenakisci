@@ -19,6 +19,10 @@ website:
             href: assignments.qmd
           - text: Project
             href: project.qmd
+      - text: Internship Projects
+        menu:
+          - text: Project 1
+            href: staj.qmd
     tools:
       - icon: github
         href: https://github.com/sudenakisci
