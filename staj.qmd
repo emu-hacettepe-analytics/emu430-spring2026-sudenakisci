@@ -1,7 +1,4 @@
 
-format: html
----
-
 ---
 title: "Crossdock Zaman Etüdü"
 subtitle: "Staj Projesi: Depo Operasyonlarında Zaman Etüdü ve İstatistiksel Analiz"

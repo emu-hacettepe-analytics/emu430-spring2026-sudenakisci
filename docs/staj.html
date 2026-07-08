@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>staj – Sude's Analytics Lab</title>
+<title>Crossdock Zaman Etüdü – Sude’s Analytics Lab</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -350,8 +350,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#format-html" id="toc-format-html" class="nav-link active" data-scroll-target="#format-html">format: html</a></li>
-  <li><a href="#proje-hakkında" id="toc-proje-hakkında" class="nav-link" data-scroll-target="#proje-hakkında">Proje Hakkında</a></li>
+  <li><a href="#proje-hakkında" id="toc-proje-hakkında" class="nav-link active" data-scroll-target="#proje-hakkında">Proje Hakkında</a></li>
   <li><a href="#veri-hazırlığı" id="toc-veri-hazırlığı" class="nav-link" data-scroll-target="#veri-hazırlığı">Veri Hazırlığı</a></li>
   <li><a href="#keşifsel-veri-analizi-eda" id="toc-keşifsel-veri-analizi-eda" class="nav-link" data-scroll-target="#keşifsel-veri-analizi-eda">Keşifsel Veri Analizi (EDA)</a></li>
   <li><a href="#zaman-nereye-gidiyor-pareto-analizi" id="toc-zaman-nereye-gidiyor-pareto-analizi" class="nav-link" data-scroll-target="#zaman-nereye-gidiyor-pareto-analizi">Zaman Nereye Gidiyor? (Pareto Analizi)</a></li>
@@ -390,9 +389,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="format-html" class="level2">
-<h2 class="anchored" data-anchor-id="format-html">format: html</h2>
-</section>
 <section id="proje-hakkında" class="level2">
 <h2 class="anchored" data-anchor-id="proje-hakkında">Proje Hakkında</h2>
 <p>Staj yaptığım firmanın crossdock deposunda 5 iş günü boyunca zaman etüdü yaptım. Operasyondaki işlemleri kronometreyle ölçtüm ve her gözlem için tarih, akış (IN/OUT), Parça miktarı, aktivite türü, süre ve çalışan kişi sayısını kaydettim. Toplamda 263 gözlem topladım.</p>
@@ -407,6 +403,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="veri-hazırlığı">Veri Hazırlığı</h2>
 <p>Ham veriyi önce Excel’de temizledim: akış sütunundaki fazla boşlukları kaldırdım, IN/OUT bilgisini ayrı bir yön sütununa ayırdım ve boş satırları sildim. Parça miktarı boş olan satırları silmedim çünkü bunlar parçayla ilgisi olmayan işlemler (yürüme, bekleme gibi), regresyona zaten girmeyecekler.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Kodu göster</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/TIME_STUDY.xlsx"</span>)</span>
@@ -415,10 +413,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(df) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"tarih"</span>, <span class="st">"akis"</span>, <span class="st">"yon"</span>, <span class="st">"soir"</span>, <span class="st">"aktivite"</span>, <span class="st">"sure"</span>, <span class="st">"parca"</span>, <span class="st">"kisi"</span>)</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 263</code></pre>
 </div>
+<details class="code-fold">
+<summary>Kodu göster</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(df<span class="sc">$</span>yon)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
  IN OUT 
@@ -430,6 +432,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="keşifsel-veri-analizi-eda">Keşifsel Veri Analizi (EDA)</h2>
 <p>Önce her aktivitenin kaç kez gözlendiğine ve süre dağılımına baktım.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Kodu göster</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>n_gozlem <span class="ot">&lt;-</span> <span class="fu">tapply</span>(df<span class="sc">$</span>sure, df<span class="sc">$</span>aktivite, length)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>ortalama <span class="ot">&lt;-</span> <span class="fu">tapply</span>(df<span class="sc">$</span>sure, df<span class="sc">$</span>aktivite, mean)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>medyan   <span class="ot">&lt;-</span> <span class="fu">tapply</span>(df<span class="sc">$</span>sure, df<span class="sc">$</span>aktivite, median)</span>
@@ -442,6 +446,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>ozet <span class="ot">&lt;-</span> ozet[<span class="fu">order</span>(<span class="sc">-</span>ozet<span class="sc">$</span>n), ]</span>
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(ozet, <span class="at">caption =</span> <span class="st">"Aktivite bazında özet istatistikler (saniye)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <caption>Aktivite bazında özet istatistikler (saniye)</caption>
@@ -587,11 +592,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>En çok gözlenen işlemler raf yerleşim (117) ve ayrıştırma (61). Çoğu aktivitede ortalama medyandan büyük, yani dağılımlar sağa çarpık. O yüzden boxplot’u log ölçekte çizdim.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Kodu göster</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>top6 <span class="ot">&lt;-</span> <span class="fu">rownames</span>(ozet)[<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>]</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(sure <span class="sc">~</span> <span class="fu">factor</span>(aktivite, <span class="at">levels =</span> top6),</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">data =</span> df[df<span class="sc">$</span>aktivite <span class="sc">%in%</span> top6, ],</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">log =</span> <span class="st">"y"</span>, <span class="at">las =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"lightblue"</span>,</span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">xlab =</span> <span class="st">""</span>, <span class="at">ylab =</span> <span class="st">"süre (sn, log ölçek)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -606,6 +614,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="zaman-nereye-gidiyor-pareto-analizi">Zaman Nereye Gidiyor? (Pareto Analizi)</h2>
 <p>Asıl merak ettiğim soru buydu. Her aktivitenin toplam süresini hesaplayıp toplam içindeki payına baktım.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Kodu göster</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>toplam <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">tapply</span>(df<span class="sc">$</span>sure, df<span class="sc">$</span>aktivite, sum), <span class="at">decreasing =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>yuzde <span class="ot">&lt;-</span> <span class="dv">100</span> <span class="sc">*</span> toplam <span class="sc">/</span> <span class="fu">sum</span>(toplam)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>kumulatif <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(yuzde)</span>
@@ -615,6 +625,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>                           <span class="at">kumulatif =</span> <span class="fu">round</span>(kumulatif, <span class="dv">1</span>))</span>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">head</span>(pareto_tablo, <span class="dv">6</span>), <span class="at">caption =</span> <span class="st">"Toplam sürenin aktivitelere dağılımı"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <caption>Toplam sürenin aktivitelere dağılımı</caption>
@@ -668,11 +679,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="cell">
+<details class="code-fold">
+<summary>Kodu göster</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">9</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">4</span>))</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>cb <span class="ot">&lt;-</span> <span class="fu">barplot</span>(yuzde, <span class="at">las =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"salmon"</span>, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">105</span>),</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">ylab =</span> <span class="st">"toplam sürenin %si"</span>)</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(cb, kumulatif, <span class="at">type =</span> <span class="st">"b"</span>, <span class="at">pch =</span> <span class="dv">19</span>)</span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">80</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -690,6 +704,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Standart zaman hesabında allowance oranını varsayımla seçmek yerine kendi verimden hesapladım: gözlemlediğim kayıp zamanların (bekleme, yürüme, yardım) verimli zamana oranı %3,9 çıktı. Literatürde kişisel ihtiyaç ve yorgunluk payıyla birlikte %9-15 kullanıldığını da not etmek lazım, benim oranım sadece ölçebildiğim kayıpları kapsıyor. Ayrıca sahada fark ettiğim bir durum bu oranı daha da aşağı çekiyor: yürüme çoğu zaman ayrı bir faaliyet olarak değil, başka işlerle eş zamanlı gerçekleşiyordu. Örneğin çalışanlar parçayı sisteme kaydetme işini yürürken tamamlıyordu; bu yüzden yürümeyi çoğunlukla ayrı ölçemedim ve bu süreler ilgili aktivitelerin süresinin içine karıştı. Dolayısıyla hesapladığım allowance gerçek kayıp zamanın alt sınırı olarak görülmeli.</p>
 <p>Standart zamanı sadece yeterli gözlemi olan üç aktivite için hesapladım. Diğer aktivitelerde gözlem sayısı 11’in altında kaldığı için güven aralığı hesaplamak istatistiksel olarak doğru olmazdı.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Kodu göster</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>kayip <span class="ot">&lt;-</span> <span class="fu">sum</span>(df<span class="sc">$</span>sure[df<span class="sc">$</span>aktivite <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"idle time"</span>, <span class="st">"yürüme"</span>, <span class="st">"yardım"</span>)])</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>verimli <span class="ot">&lt;-</span> <span class="fu">sum</span>(df<span class="sc">$</span>sure) <span class="sc">-</span> kayip</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>allowance <span class="ot">&lt;-</span> kayip <span class="sc">/</span> verimli</span>
@@ -708,6 +724,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">std_hesap</span>(<span class="st">"arama"</span>))</span>
 <span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(st_tablo, <span class="at">caption =</span> <span class="st">"Standart zamanlar (sn), allowance = %3.9"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <caption>Standart zamanlar (sn), allowance = %3.9</caption>
@@ -758,6 +775,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Model: süre = b0 + b1 x Parça</p>
 <p>Modele geçmeden önce ilişkinin yönünü görmek için korelasyonlara baktım.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Kodu göster</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>raf <span class="ot">&lt;-</span> df[df<span class="sc">$</span>aktivite <span class="sc">==</span> <span class="st">"raf yerleşim"</span> <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(df<span class="sc">$</span>soir), ]</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>ayr <span class="ot">&lt;-</span> df[df<span class="sc">$</span>aktivite <span class="sc">==</span> <span class="st">"ayrıştırma"</span> <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(df<span class="sc">$</span>soir), ]</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>ara <span class="ot">&lt;-</span> df[df<span class="sc">$</span>aktivite <span class="sc">==</span> <span class="st">"arama"</span> <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(df<span class="sc">$</span>soir), ]</span>
@@ -770,6 +789,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>                       <span class="fu">cor</span>(ara<span class="sc">$</span>soir, ara<span class="sc">$</span>sure)), <span class="dv">2</span>))</span>
 <span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(korelasyon, <span class="at">caption =</span> <span class="st">"Parça miktarı ile süre arasındaki korelasyon"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <caption>Parça miktarı ile süre arasındaki korelasyon</caption>
@@ -802,6 +822,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Üçünde de pozitif ve orta kuvvette ilişki var. Şimdi modelleri kuruyorum. Süre verisi sağa çarpık olduğu için her aktivitede iki model denedim: düz model ve log dönüşümlü model. İkisini R² üzerinden karşılaştırdım.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Kodu göster</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>model_raf <span class="ot">&lt;-</span> <span class="fu">lm</span>(sure <span class="sc">~</span> soir, <span class="at">data =</span> raf)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>model_ayr <span class="ot">&lt;-</span> <span class="fu">lm</span>(sure <span class="sc">~</span> soir, <span class="at">data =</span> ayr)</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>model_ara <span class="ot">&lt;-</span> <span class="fu">lm</span>(sure <span class="sc">~</span> soir, <span class="at">data =</span> ara)</span>
@@ -827,6 +849,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(karsilastirma, <span class="at">row.names =</span> <span class="cn">FALSE</span>,</span>
 <span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>             <span class="at">caption =</span> <span class="st">"Regresyon modellerinin karşılaştırması"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <caption>Regresyon modellerinin karşılaştırması</caption>
@@ -867,7 +890,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Örnek olarak raf yerleşim modelinin tam çıktısı:</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Kodu göster</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_raf)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -890,6 +916,8 @@ F-statistic: 31.23 on 1 and 115 DF,  p-value: 1.563e-07</code></pre>
 </div>
 </div>
 <div class="cell">
+<details class="code-fold">
+<summary>Kodu göster</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>))</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(raf<span class="sc">$</span>soir, raf<span class="sc">$</span>sure, <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">col =</span> <span class="st">"gray40"</span>,</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Parça"</span>, <span class="at">ylab =</span> <span class="st">"süre (sn)"</span>, <span class="at">main =</span> <span class="st">"raf yerleşim"</span>)</span>
@@ -900,6 +928,7 @@ F-statistic: 31.23 on 1 and 115 DF,  p-value: 1.563e-07</code></pre>
 <span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ara<span class="sc">$</span>soir, ara<span class="sc">$</span>sure, <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">col =</span> <span class="st">"gray40"</span>,</span>
 <span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Parça"</span>, <span class="at">ylab =</span> <span class="st">"süre (sn)"</span>, <span class="at">main =</span> <span class="st">"arama"</span>)</span>
 <span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(model_ara, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -913,9 +942,12 @@ F-statistic: 31.23 on 1 and 115 DF,  p-value: 1.563e-07</code></pre>
 <p>R² değerleri ise 0,21 ile 0,45 arasında. Yani parça miktarı anlamlı bir açıklayıcı olsa da tek başına yeterli değil; raf yerleşim süresindeki değişkenliğin yaklaşık %79’u modelde olmayan faktörlerden kaynaklanıyor. Bence en önemli eksik değişkenler raf mesafesi ve raf seviyesi, çünkü bunları ölçme imkanım olmadı. Ayrıca yürüme sürelerinin aktivite sürelerine gömülü ölçülmesi de modellerin açıklayamadığı değişkenliğin bir kısmını oluşturuyor olabilir. Log dönüşümü karşılaştırmasında ise sadece ayrıştırmada uyum belirgin şekilde iyileşti (0,29’dan 0,35’e), diğer ikisinde düz model yeterli.</p>
 <p>Son olarak derste model varsayımlarını kontrol etmenin önemini görmüştük, o yüzden artık (residual) grafiğine baktım.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Kodu göster</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">fitted</span>(model_raf), <span class="fu">resid</span>(model_raf), <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">col =</span> <span class="st">"gray40"</span>,</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"tahmin edilen süre"</span>, <span class="at">ylab =</span> <span class="st">"artık"</span>)</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"red"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -930,6 +962,8 @@ F-statistic: 31.23 on 1 and 115 DF,  p-value: 1.563e-07</code></pre>
 <section id="in-ve-out-süreçlerinin-karşılaştırması" class="level2">
 <h2 class="anchored" data-anchor-id="in-ve-out-süreçlerinin-karşılaştırması">IN ve OUT Süreçlerinin Karşılaştırması</h2>
 <div class="cell">
+<details class="code-fold">
+<summary>Kodu göster</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">9</span>, <span class="dv">4</span>, <span class="dv">3</span>, <span class="dv">1</span>))</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>in_t  <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">tapply</span>(df<span class="sc">$</span>sure[df<span class="sc">$</span>yon <span class="sc">==</span> <span class="st">"IN"</span>],  df<span class="sc">$</span>aktivite[df<span class="sc">$</span>yon <span class="sc">==</span> <span class="st">"IN"</span>],  sum),</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">decreasing =</span> <span class="cn">TRUE</span>)</span>
@@ -937,6 +971,7 @@ F-statistic: 31.23 on 1 and 115 DF,  p-value: 1.563e-07</code></pre>
 <span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">decreasing =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(in_t <span class="sc">/</span> <span class="dv">60</span>,  <span class="at">las =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"lightblue"</span>, <span class="at">main =</span> <span class="st">"IN"</span>,  <span class="at">ylab =</span> <span class="st">"toplam dk"</span>)</span>
 <span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(out_t <span class="sc">/</span> <span class="dv">60</span>, <span class="at">las =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"orange"</span>,    <span class="at">main =</span> <span class="st">"OUT"</span>, <span class="at">ylab =</span> <span class="st">"toplam dk"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
