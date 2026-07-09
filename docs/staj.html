@@ -410,7 +410,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/TIME_STUDY.xlsx"</span>)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># sutun adlarini kisalttim, kodda yazmasi kolay olsun diye</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(df) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"tarih"</span>, <span class="st">"akis"</span>, <span class="st">"yon"</span>, <span class="st">"soir"</span>, <span class="st">"aktivite"</span>, <span class="st">"sure"</span>, <span class="st">"parca"</span>, <span class="st">"kisi"</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(df) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"tarih"</span>, <span class="st">"akis"</span>, <span class="st">"yon"</span>, <span class="st">"parca"</span>, <span class="st">"aktivite"</span>, <span class="st">"sure"</span>, <span class="st">"parca_turu"</span>, <span class="st">"kisi"</span>)</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
@@ -773,20 +773,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="regresyon-parça-miktarı-süreyi-açıklıyor-mu">Regresyon: Parça Miktarı Süreyi Açıklıyor mu?</h2>
 <p>Bu bölümde Design of Engineering Experiments ve Data Mining dersinde öğrendiğim doğrusal regresyon yaklaşımını kendi sahadan topladığım veriye uyguladım. Her aktivite için ayrı model kurdum çünkü işlemlerin doğası farklı, tek modelde birleştirmek yanıltıcı olurdu.</p>
 <p>Model: süre = b0 + b1 x Parça</p>
+<p>Katsayıları en küçük kareler (least squares) yöntemiyle tahmin ettim. Bu yöntem, saçılım grafiğindeki noktalara öyle bir doğru arıyor ki gözlenen değerler ile doğrunun tahmin ettiği değerler arasındaki farkların (artıkların) kareleri toplamı minimum olsun. R’da <code>lm()</code> fonksiyonu bu hesabı yapıyor.</p>
+<p>Katsayının anlamlı olup olmadığını da hipotez testiyle kontrol ettim. Sıfır hipotezi H0: b1 = 0, yani parça miktarının süre üzerinde etkisi yok; alternatif hipotez H1: b1 ≠ 0, yani etkisi var. Çıktıdaki p-değeri, H0 doğru olsaydı elimdeki kadar güçlü bir ilişkiyi tesadüfen görme olasılığı. p-değeri 0.05’in altındaysa H0’ı reddedip katsayının istatistiksel olarak anlamlı olduğuna karar veriyorum.</p>
 <p>Modele geçmeden önce ilişkinin yönünü görmek için korelasyonlara baktım.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Kodu göster</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>raf <span class="ot">&lt;-</span> df[df<span class="sc">$</span>aktivite <span class="sc">==</span> <span class="st">"raf yerleşim"</span> <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(df<span class="sc">$</span>soir), ]</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>ayr <span class="ot">&lt;-</span> df[df<span class="sc">$</span>aktivite <span class="sc">==</span> <span class="st">"ayrıştırma"</span> <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(df<span class="sc">$</span>soir), ]</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>ara <span class="ot">&lt;-</span> df[df<span class="sc">$</span>aktivite <span class="sc">==</span> <span class="st">"arama"</span> <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(df<span class="sc">$</span>soir), ]</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>raf <span class="ot">&lt;-</span> df[df<span class="sc">$</span>aktivite <span class="sc">==</span> <span class="st">"raf yerleşim"</span> <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(df<span class="sc">$</span>parca), ]</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>ayr <span class="ot">&lt;-</span> df[df<span class="sc">$</span>aktivite <span class="sc">==</span> <span class="st">"ayrıştırma"</span> <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(df<span class="sc">$</span>parca), ]</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>ara <span class="ot">&lt;-</span> df[df<span class="sc">$</span>aktivite <span class="sc">==</span> <span class="st">"arama"</span> <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(df<span class="sc">$</span>parca), ]</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>korelasyon <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
 <span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">aktivite =</span> <span class="fu">c</span>(<span class="st">"raf yerleşim"</span>, <span class="st">"ayrıştırma"</span>, <span class="st">"arama"</span>),</span>
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="fu">c</span>(<span class="fu">nrow</span>(raf), <span class="fu">nrow</span>(ayr), <span class="fu">nrow</span>(ara)),</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">korelasyon =</span> <span class="fu">round</span>(<span class="fu">c</span>(<span class="fu">cor</span>(raf<span class="sc">$</span>soir, raf<span class="sc">$</span>sure),</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>                       <span class="fu">cor</span>(ayr<span class="sc">$</span>soir, ayr<span class="sc">$</span>sure),</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>                       <span class="fu">cor</span>(ara<span class="sc">$</span>soir, ara<span class="sc">$</span>sure)), <span class="dv">2</span>))</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">korelasyon =</span> <span class="fu">round</span>(<span class="fu">c</span>(<span class="fu">cor</span>(raf<span class="sc">$</span>parca, raf<span class="sc">$</span>sure),</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>                       <span class="fu">cor</span>(ayr<span class="sc">$</span>parca, ayr<span class="sc">$</span>sure),</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>                       <span class="fu">cor</span>(ara<span class="sc">$</span>parca, ara<span class="sc">$</span>sure)), <span class="dv">2</span>))</span>
 <span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(korelasyon, <span class="at">caption =</span> <span class="st">"Parça miktarı ile süre arasındaki korelasyon"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
@@ -824,14 +826,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details class="code-fold">
 <summary>Kodu göster</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>model_raf <span class="ot">&lt;-</span> <span class="fu">lm</span>(sure <span class="sc">~</span> soir, <span class="at">data =</span> raf)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>model_ayr <span class="ot">&lt;-</span> <span class="fu">lm</span>(sure <span class="sc">~</span> soir, <span class="at">data =</span> ayr)</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>model_ara <span class="ot">&lt;-</span> <span class="fu">lm</span>(sure <span class="sc">~</span> soir, <span class="at">data =</span> ara)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>model_raf <span class="ot">&lt;-</span> <span class="fu">lm</span>(sure <span class="sc">~</span> parca, <span class="at">data =</span> raf)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>model_ayr <span class="ot">&lt;-</span> <span class="fu">lm</span>(sure <span class="sc">~</span> parca, <span class="at">data =</span> ayr)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>model_ara <span class="ot">&lt;-</span> <span class="fu">lm</span>(sure <span class="sc">~</span> parca, <span class="at">data =</span> ara)</span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># log donusumlu alternatif modeller</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>model_raf_log <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(sure) <span class="sc">~</span> soir, <span class="at">data =</span> raf)</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>model_ayr_log <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(sure) <span class="sc">~</span> soir, <span class="at">data =</span> ayr)</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>model_ara_log <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(sure) <span class="sc">~</span> soir, <span class="at">data =</span> ara)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>model_raf_log <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(sure) <span class="sc">~</span> parca, <span class="at">data =</span> raf)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>model_ayr_log <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(sure) <span class="sc">~</span> parca, <span class="at">data =</span> ayr)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>model_ara_log <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(sure) <span class="sc">~</span> parca, <span class="at">data =</span> ara)</span>
 <span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>model_ozet <span class="ot">&lt;-</span> <span class="cf">function</span>(model, log_model, ad) {</span>
 <span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  s <span class="ot">&lt;-</span> <span class="fu">summary</span>(model)</span>
@@ -897,7 +899,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
-lm(formula = sure ~ soir, data = raf)
+lm(formula = sure ~ parca, data = raf)
 
 Residuals:
     Min      1Q  Median      3Q     Max 
@@ -906,7 +908,7 @@ Residuals:
 Coefficients:
             Estimate Std. Error t value Pr(&gt;|t|)    
 (Intercept)  35.9096     4.3958   8.169 4.51e-13 ***
-soir          4.9938     0.8936   5.588 1.56e-07 ***
+parca         4.9938     0.8936   5.588 1.56e-07 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
@@ -919,13 +921,13 @@ F-statistic: 31.23 on 1 and 115 DF,  p-value: 1.563e-07</code></pre>
 <details class="code-fold">
 <summary>Kodu göster</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>))</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(raf<span class="sc">$</span>soir, raf<span class="sc">$</span>sure, <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">col =</span> <span class="st">"gray40"</span>,</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(raf<span class="sc">$</span>parca, raf<span class="sc">$</span>sure, <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">col =</span> <span class="st">"gray40"</span>,</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Parça"</span>, <span class="at">ylab =</span> <span class="st">"süre (sn)"</span>, <span class="at">main =</span> <span class="st">"raf yerleşim"</span>)</span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(model_raf, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ayr<span class="sc">$</span>soir, ayr<span class="sc">$</span>sure, <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">col =</span> <span class="st">"gray40"</span>,</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ayr<span class="sc">$</span>parca, ayr<span class="sc">$</span>sure, <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">col =</span> <span class="st">"gray40"</span>,</span>
 <span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Parça"</span>, <span class="at">ylab =</span> <span class="st">"süre (sn)"</span>, <span class="at">main =</span> <span class="st">"ayrıştırma"</span>)</span>
 <span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(model_ayr, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ara<span class="sc">$</span>soir, ara<span class="sc">$</span>sure, <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">col =</span> <span class="st">"gray40"</span>,</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ara<span class="sc">$</span>parca, ara<span class="sc">$</span>sure, <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">col =</span> <span class="st">"gray40"</span>,</span>
 <span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Parça"</span>, <span class="at">ylab =</span> <span class="st">"süre (sn)"</span>, <span class="at">main =</span> <span class="st">"arama"</span>)</span>
 <span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(model_ara, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
@@ -938,8 +940,8 @@ F-statistic: 31.23 on 1 and 115 DF,  p-value: 1.563e-07</code></pre>
 </div>
 </div>
 </div>
-<p>Üç modelde de Parça katsayısı istatistiksel olarak anlamlı (hepsinde p &lt; 0.01). Katsayılara göre her ek parça raf yerleşim süresine yaklaşık 5 sn, ayrıştırmaya 5,2 sn, aramaya ise 27 sn ekliyor. Aramadaki katsayının bu kadar büyük olması saha gözlemimle de uyuşuyor: sipariş ne kadar çok kalem içeriyorsa o kadar çok rafta raf içi kontrol yapmak gerekiyor.</p>
-<p>R² değerleri ise 0,21 ile 0,45 arasında. Yani parça miktarı anlamlı bir açıklayıcı olsa da tek başına yeterli değil; raf yerleşim süresindeki değişkenliğin yaklaşık %79’u modelde olmayan faktörlerden kaynaklanıyor. Bence en önemli eksik değişkenler raf mesafesi ve raf seviyesi, çünkü bunları ölçme imkanım olmadı. Ayrıca yürüme sürelerinin aktivite sürelerine gömülü ölçülmesi de modellerin açıklayamadığı değişkenliğin bir kısmını oluşturuyor olabilir. Log dönüşümü karşılaştırmasında ise sadece ayrıştırmada uyum belirgin şekilde iyileşti (0,29’dan 0,35’e), diğer ikisinde düz model yeterli.</p>
+<p>Üç modelde de p-değerleri 0.05’in çok altında çıktı, yani üç aktivitede de H0’ı reddediyorum: Parça katsayısı istatistiksel olarak anlamlı (hepsinde p &lt; 0.01). Katsayılara göre her ek parça raf yerleşim süresine yaklaşık 5 sn, ayrıştırmaya 5,2 sn, aramaya ise 27 sn ekliyor. Aramadaki katsayının bu kadar büyük olması saha gözlemimle de uyuşuyor: sipariş ne kadar çok kalem içeriyorsa o kadar çok rafta raf içi kontrol yapmak gerekiyor.</p>
+<p>R² değerleri ise 0,21 ile 0,45 arasında; yani parça miktarı anlamlı bir açıklayıcı olsa da tek başına yeterli değil. Bu sonuç benim açımdan öğretici oldu, çünkü analize başlarken beklentim farklıydı: parça miktarının özellikle ayrıştırmada etkili olacağını, raf yerleşiminde ise sürenin daha çok raf mesafesi ve raf seviyesi gibi ölçme imkanım olmayan değişkenlere bağlı olduğunu, parça miktarının belirleyici olmadığını düşünüyordum. Sonuçlar bu beklentiyi kısmen düzeltti: parça miktarı raf yerleşiminde de anlamlı çıktı. Ancak R²’nin 0,21’de kalması, yani değişkenliğin yaklaşık %79’unun modelle açıklanamaması, asıl belirleyicilerin mesafe ve raf seviyesi olduğu yönündeki sezgimle tutarlı. Bu değişkenleri ölçemediğim için bu kısım bir bulgu değil, gelecek çalışma için bir hipotez. Ayrıca yürüme sürelerinin aktivite sürelerine gömülü ölçülmesi de açıklanamayan değişkenliğin bir kısmını oluşturuyor olabilir. Log dönüşümü karşılaştırmasında ise sadece ayrıştırmada uyum belirgin şekilde iyileşti (0,29’dan 0,35’e), diğer ikisinde düz model yeterli.</p>
 <p>Son olarak derste model varsayımlarını kontrol etmenin önemini görmüştük, o yüzden artık (residual) grafiğine baktım.</p>
 <div class="cell">
 <details class="code-fold">

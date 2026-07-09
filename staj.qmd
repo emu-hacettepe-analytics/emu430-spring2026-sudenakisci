@@ -1,4 +1,3 @@
-
 ---
 title: "Crossdock Zaman Etüdü"
 subtitle: "Staj Projesi: Depo Operasyonlarında Zaman Etüdü ve İstatistiksel Analiz"
@@ -32,7 +31,7 @@ library(readxl)
 df <- read_excel("data/TIME_STUDY.xlsx")
 
 # sutun adlarini kisalttim, kodda yazmasi kolay olsun diye
-names(df) <- c("tarih", "akis", "yon", "soir", "aktivite", "sure", "parca", "kisi")
+names(df) <- c("tarih", "akis", "yon", "parca", "aktivite", "sure", "parca_turu", "kisi")
 
 nrow(df)
 table(df$yon)
@@ -134,19 +133,23 @@ işlemlerin doğası farklı, tek modelde birleştirmek yanıltıcı olurdu.
 
 Model: süre = b0 + b1 x Parça
 
+Katsayıları en küçük kareler (least squares) yöntemiyle tahmin ettim. Bu yöntem, saçılım grafiğindeki noktalara öyle bir doğru arıyor ki gözlenen değerler ile doğrunun tahmin ettiği değerler arasındaki farkların (artıkların) kareleri toplamı minimum olsun. R'da `lm()` fonksiyonu bu hesabı yapıyor.
+
+Katsayının anlamlı olup olmadığını da hipotez testiyle kontrol ettim. Sıfır hipotezi H0: b1 = 0, yani parça miktarının süre üzerinde etkisi yok; alternatif hipotez H1: b1 ≠ 0, yani etkisi var. Çıktıdaki p-değeri, H0 doğru olsaydı elimdeki kadar güçlü bir ilişkiyi tesadüfen görme olasılığı. p-değeri 0.05'in altındaysa H0'ı reddedip katsayının istatistiksel olarak anlamlı olduğuna karar veriyorum.
+
 Modele geçmeden önce ilişkinin yönünü görmek için korelasyonlara baktım.
 
 ```{r}
-raf <- df[df$aktivite == "raf yerleşim" & !is.na(df$soir), ]
-ayr <- df[df$aktivite == "ayrıştırma" & !is.na(df$soir), ]
-ara <- df[df$aktivite == "arama" & !is.na(df$soir), ]
+raf <- df[df$aktivite == "raf yerleşim" & !is.na(df$parca), ]
+ayr <- df[df$aktivite == "ayrıştırma" & !is.na(df$parca), ]
+ara <- df[df$aktivite == "arama" & !is.na(df$parca), ]
 
 korelasyon <- data.frame(
   aktivite = c("raf yerleşim", "ayrıştırma", "arama"),
   n = c(nrow(raf), nrow(ayr), nrow(ara)),
-  korelasyon = round(c(cor(raf$soir, raf$sure),
-                       cor(ayr$soir, ayr$sure),
-                       cor(ara$soir, ara$sure)), 2))
+  korelasyon = round(c(cor(raf$parca, raf$sure),
+                       cor(ayr$parca, ayr$sure),
+                       cor(ara$parca, ara$sure)), 2))
 
 knitr::kable(korelasyon, caption = "Parça miktarı ile süre arasındaki korelasyon")
 ```
@@ -156,14 +159,14 @@ verisi sağa çarpık olduğu için her aktivitede iki model denedim: düz model
 log dönüşümlü model. İkisini R² üzerinden karşılaştırdım.
 
 ```{r}
-model_raf <- lm(sure ~ soir, data = raf)
-model_ayr <- lm(sure ~ soir, data = ayr)
-model_ara <- lm(sure ~ soir, data = ara)
+model_raf <- lm(sure ~ parca, data = raf)
+model_ayr <- lm(sure ~ parca, data = ayr)
+model_ara <- lm(sure ~ parca, data = ara)
 
 # log donusumlu alternatif modeller
-model_raf_log <- lm(log(sure) ~ soir, data = raf)
-model_ayr_log <- lm(log(sure) ~ soir, data = ayr)
-model_ara_log <- lm(log(sure) ~ soir, data = ara)
+model_raf_log <- lm(log(sure) ~ parca, data = raf)
+model_ayr_log <- lm(log(sure) ~ parca, data = ayr)
+model_ara_log <- lm(log(sure) ~ parca, data = ara)
 
 model_ozet <- function(model, log_model, ad) {
   s <- summary(model)
@@ -192,29 +195,24 @@ summary(model_raf)
 ```{r}
 #| fig-cap: "Parça miktarı ile süre ilişkisi (kırmızı: regresyon doğrusu)"
 par(mfrow = c(1, 3))
-plot(raf$soir, raf$sure, pch = 19, col = "gray40",
+plot(raf$parca, raf$sure, pch = 19, col = "gray40",
      xlab = "Parça", ylab = "süre (sn)", main = "raf yerleşim")
 abline(model_raf, col = "red", lwd = 2)
-plot(ayr$soir, ayr$sure, pch = 19, col = "gray40",
+plot(ayr$parca, ayr$sure, pch = 19, col = "gray40",
      xlab = "Parça", ylab = "süre (sn)", main = "ayrıştırma")
 abline(model_ayr, col = "red", lwd = 2)
-plot(ara$soir, ara$sure, pch = 19, col = "gray40",
+plot(ara$parca, ara$sure, pch = 19, col = "gray40",
      xlab = "Parça", ylab = "süre (sn)", main = "arama")
 abline(model_ara, col = "red", lwd = 2)
 ```
 
-Üç modelde de Parça katsayısı istatistiksel olarak anlamlı (hepsinde p < 0.01).
+Üç modelde de p-değerleri 0.05'in çok altında çıktı, yani üç aktivitede de H0'ı reddediyorum: Parça katsayısı istatistiksel olarak anlamlı (hepsinde p < 0.01).
 Katsayılara göre her ek parça raf yerleşim süresine yaklaşık 5 sn, ayrıştırmaya
 5,2 sn, aramaya ise 27 sn ekliyor. Aramadaki katsayının bu kadar büyük olması
 saha gözlemimle de uyuşuyor: sipariş ne kadar çok kalem içeriyorsa o kadar çok
 rafta raf içi kontrol yapmak gerekiyor.
 
-R² değerleri ise 0,21 ile 0,45 arasında. Yani parça miktarı anlamlı bir
-açıklayıcı olsa da tek başına yeterli değil; raf yerleşim süresindeki
-değişkenliğin yaklaşık %79'u modelde olmayan faktörlerden kaynaklanıyor. Bence
-en önemli eksik değişkenler raf mesafesi ve raf seviyesi, çünkü bunları ölçme
-imkanım olmadı. Ayrıca yürüme sürelerinin aktivite sürelerine gömülü ölçülmesi de modellerin açıklayamadığı değişkenliğin bir kısmını oluşturuyor olabilir. Log dönüşümü karşılaştırmasında ise sadece ayrıştırmada uyum
-belirgin şekilde iyileşti (0,29'dan 0,35'e), diğer ikisinde düz model yeterli.
+R² değerleri ise 0,21 ile 0,45 arasında; yani parça miktarı anlamlı bir açıklayıcı olsa da tek başına yeterli değil. Bu sonuç benim açımdan öğretici oldu, çünkü analize başlarken beklentim farklıydı: parça miktarının özellikle ayrıştırmada etkili olacağını, raf yerleşiminde ise sürenin daha çok raf mesafesi ve raf seviyesi gibi ölçme imkanım olmayan değişkenlere bağlı olduğunu, parça miktarının belirleyici olmadığını düşünüyordum. Sonuçlar bu beklentiyi kısmen düzeltti: parça miktarı raf yerleşiminde de anlamlı çıktı. Ancak R²'nin 0,21'de kalması, yani değişkenliğin yaklaşık %79'unun modelle açıklanamaması, asıl belirleyicilerin mesafe ve raf seviyesi olduğu yönündeki sezgimle tutarlı. Bu değişkenleri ölçemediğim için bu kısım bir bulgu değil, gelecek çalışma için bir hipotez. Ayrıca yürüme sürelerinin aktivite sürelerine gömülü ölçülmesi de açıklanamayan değişkenliğin bir kısmını oluşturuyor olabilir. Log dönüşümü karşılaştırmasında ise sadece ayrıştırmada uyum belirgin şekilde iyileşti (0,29'dan 0,35'e), diğer ikisinde düz model yeterli.
 
 Son olarak derste model varsayımlarını kontrol etmenin önemini görmüştük, o
 yüzden artık (residual) grafiğine baktım.
