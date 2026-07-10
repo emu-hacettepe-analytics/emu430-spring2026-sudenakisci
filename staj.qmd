@@ -233,15 +233,16 @@ aslında log dönüşümü gibi alternatifleri denememin sebebiydi.
 
 ```{r}
 #| fig-cap: "Yön bazında toplam süre dağılımı"
-par(mfrow = c(1, 2), mar = c(9, 4, 3, 1))
+par(mfrow = c(1, 2), mar = c(10, 4, 3, 1))
 in_t  <- sort(tapply(df$sure[df$yon == "IN"],  df$aktivite[df$yon == "IN"],  sum),
               decreasing = TRUE)
 out_t <- sort(tapply(df$sure[df$yon == "OUT"], df$aktivite[df$yon == "OUT"], sum),
               decreasing = TRUE)
-barplot(in_t / 60,  las = 2, col = "lightblue", main = "IN",  ylab = "toplam dk")
-barplot(out_t / 60, las = 2, col = "orange",    main = "OUT", ylab = "toplam dk")
+barplot(in_t / 60,  las = 2, col = "lightblue", main = "IN",  ylab = "toplam dk",
+        cex.names = 0.7)
+barplot(out_t / 60, las = 2, col = "orange",    main = "OUT", ylab = "toplam dk",
+        cex.names = 0.7)
 ```
-
 İki süreç birbirinden çok farklı davranıyor. IN tarafı (224 gözlem) kısa ve öngörülebilir işlemlerden oluşuyor: raf yerleşim ve ayrıştırma medyanları 37-43 saniye. OUT tarafında ise (39 gözlem) zamanın büyük kısmı aramaya gidiyor. OUT sürecini daha az gözlemleyebildiğim için bu taraftaki bulgular IN'e göre daha az kesin.
 
 ## Sonuç ve Öneriler
