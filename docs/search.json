@@ -156,14 +156,14 @@
     "href": "staj.html",
     "title": "Crossdock Zaman Etüdü",
     "section": "",
-    "text": "Staj yaptığım firmanın crossdock deposunda 8 iş günü boyunca zaman etüdü yaptım. Operasyondaki işlemleri kronometreyle ölçtüm ve her gözlem için tarih, akış (IN/OUT), iş emri miktarı, aktivite türü, süre ve çalışan kişi sayısını kaydettim. Toplamda 263 gözlem topladım.\nBu sayfada verinin analizini R ile yaptım. Amacım üç soruya cevap bulmaktı:\n\nDepoda zaman en çok hangi işlemlere gidiyor?\nTemel işlemler için standart zaman ne olmalı?\nİş emri miktarı işlem sürelerini açıklıyor mu?"
+    "text": "Staj yaptığım firmanın crossdock deposunda 7 iş günü boyunca zaman etüdü yaptım. Operasyondaki işlemleri kronometreyle ölçtüm ve her gözlem için tarih, akış (IN/OUT), iş emri miktarı, aktivite türü, süre ve çalışan kişi sayısını kaydettim. Toplamda 263 gözlem topladım.\nBu sayfada verinin analizini R ile yaptım. Amacım üç soruya cevap bulmaktı:\n\nDepoda zaman en çok hangi işlemlere gidiyor?\nTemel işlemler için standart zaman ne olmalı?\nİş emri miktarı işlem sürelerini açıklıyor mu?"
   },
   {
     "objectID": "staj.html#proje-hakkında",
     "href": "staj.html#proje-hakkında",
     "title": "Crossdock Zaman Etüdü",
     "section": "",
-    "text": "Staj yaptığım firmanın crossdock deposunda 8 iş günü boyunca zaman etüdü yaptım. Operasyondaki işlemleri kronometreyle ölçtüm ve her gözlem için tarih, akış (IN/OUT), iş emri miktarı, aktivite türü, süre ve çalışan kişi sayısını kaydettim. Toplamda 263 gözlem topladım.\nBu sayfada verinin analizini R ile yaptım. Amacım üç soruya cevap bulmaktı:\n\nDepoda zaman en çok hangi işlemlere gidiyor?\nTemel işlemler için standart zaman ne olmalı?\nİş emri miktarı işlem sürelerini açıklıyor mu?"
+    "text": "Staj yaptığım firmanın crossdock deposunda 7 iş günü boyunca zaman etüdü yaptım. Operasyondaki işlemleri kronometreyle ölçtüm ve her gözlem için tarih, akış (IN/OUT), iş emri miktarı, aktivite türü, süre ve çalışan kişi sayısını kaydettim. Toplamda 263 gözlem topladım.\nBu sayfada verinin analizini R ile yaptım. Amacım üç soruya cevap bulmaktı:\n\nDepoda zaman en çok hangi işlemlere gidiyor?\nTemel işlemler için standart zaman ne olmalı?\nİş emri miktarı işlem sürelerini açıklıyor mu?"
   },
   {
     "objectID": "staj.html#veri-hazırlığı",

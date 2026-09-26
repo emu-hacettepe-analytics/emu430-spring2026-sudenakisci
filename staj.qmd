@@ -13,7 +13,7 @@ execute:
 
 ## Proje Hakkında
 
-Staj yaptığım firmanın crossdock deposunda 8 iş günü boyunca zaman etüdü yaptım. Operasyondaki işlemleri kronometreyle ölçtüm ve her gözlem için tarih, akış (IN/OUT), iş emri miktarı, aktivite türü, süre ve çalışan kişi sayısını kaydettim. Toplamda 263 gözlem topladım.
+Staj yaptığım firmanın crossdock deposunda 7 iş günü boyunca zaman etüdü yaptım. Operasyondaki işlemleri kronometreyle ölçtüm ve her gözlem için tarih, akış (IN/OUT), iş emri miktarı, aktivite türü, süre ve çalışan kişi sayısını kaydettim. Toplamda 263 gözlem topladım.
 
 Bu sayfada verinin analizini R ile yaptım. Amacım üç soruya cevap bulmaktı:
 
