@@ -92,9 +92,9 @@ lines(cb, kumulatif, type = "b", pch = 19)
 abline(h = 80, lty = 2)
 ```
 
-Sonuç beni açıkçası şaşırttı. Gözlemlerin sadece %8'i arama olmasına rağmen **toplam sürenin %47'si parça aramaya gidiyor.** Ortalama bir arama yaklaşık 13 dakika sürüyor ve neredeyse tamamı OUT (sevkiyat) sürecinde gerçekleşiyor. Toplam sürenin %81'i ise sadece 4 aktivitede toplanıyor: arama, raf yerleşim, ayrıştırma ve yükleme.
+Sonuç beni açıkçası şaşırttı. Gözlemlerin sadece %8'i arama olmasına rağmen **toplam sürenin %47'si iş emri aramaya gidiyor.** Ortalama bir arama yaklaşık 13 dakika sürüyor ve neredeyse tamamı OUT (sevkiyat) sürecinde gerçekleşiyor. Toplam sürenin %81'i ise sadece 4 aktivitede toplanıyor: arama, raf yerleşim, ayrıştırma ve yükleme.
 
-Depoda parça takibi raf seviyesinde yapılmaktadır; parçanın hangi rafta olduğu bilinmekle birlikte, aynı rafta birden fazla parça türü bulunduğundan çalışanın raf içinde tek tek kontrol yapması gerekmektedir. Arama süresinin büyük kısmı bu raf içi kontrolden kaynaklanmaktadır. Arama, mevcut sistemde zorunlu olsa da parçaya değer katmayan bir faaliyettir ve lokasyon takibinin raf içi göz/bölme seviyesine indirilmesi, raf içi etiketleme veya aynı rafta karışık parça depolamanın azaltılması gibi iyileştirmelerle büyük ölçüde ortadan kaldırılabilir. Toplam sürenin %47'sinin aramaya gitmesi, iyileştirme potansiyelinin en yüksek olduğu alanın burası olduğunu göstermektedir.
+Depoda iş emri takibi raf seviyesinde yapılmaktadır; parçanın hangi rafta olduğu bilinmekle birlikte, aynı rafta birden fazla parça türü bulunduğundan çalışanın raf içinde tek tek kontrol yapması gerekmektedir. Arama süresinin büyük kısmı bu raf içi kontrolden kaynaklanmaktadır. Arama, mevcut sistemde zorunlu olsa da parçaya değer katmayan bir faaliyettir ve lokasyon takibinin raf içi göz/bölme seviyesine indirilmesi, raf içi etiketleme veya aynı rafta karışık parça depolamanın azaltılması gibi iyileştirmelerle büyük ölçüde ortadan kaldırılabilir. Toplam sürenin %47'sinin aramaya gitmesi, iyileştirme potansiyelinin en yüksek olduğu alanın burası olduğunu göstermektedir.
 
 ## Standart Zaman Analizi
 
