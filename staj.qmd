@@ -13,17 +13,17 @@ execute:
 
 ## Proje Hakkında
 
-Staj yaptığım firmanın crossdock deposunda 5 iş günü boyunca zaman etüdü yaptım. Operasyondaki işlemleri kronometreyle ölçtüm ve her gözlem için tarih, akış (IN/OUT), Parça miktarı, aktivite türü, süre ve çalışan kişi sayısını kaydettim. Toplamda 263 gözlem topladım.
+Staj yaptığım firmanın crossdock deposunda 5 iş günü boyunca zaman etüdü yaptım. Operasyondaki işlemleri kronometreyle ölçtüm ve her gözlem için tarih, akış (IN/OUT), iş emri miktarı, aktivite türü, süre ve çalışan kişi sayısını kaydettim. Toplamda 263 gözlem topladım.
 
 Bu sayfada verinin analizini R ile yaptım. Amacım üç soruya cevap bulmaktı:
 
-1. Depoda zaman en çok hangi işlemlere gidiyor?
-2. Temel işlemler için standart zaman ne olmalı?
-3. Parça miktarı işlem sürelerini açıklıyor mu?
+1.  Depoda zaman en çok hangi işlemlere gidiyor?
+2.  Temel işlemler için standart zaman ne olmalı?
+3.  İş emri miktarı işlem sürelerini açıklıyor mu?
 
 ## Veri Hazırlığı
 
-Ham veriyi önce Excel'de temizledim: akış sütunundaki fazla boşlukları kaldırdım, IN/OUT bilgisini ayrı bir yön sütununa ayırdım ve boş satırları sildim. Parça miktarı boş olan satırları silmedim çünkü bunlar parçayla ilgisi olmayan işlemler (yürüme, bekleme gibi), regresyona zaten girmeyecekler.
+Ham veriyi önce Excel'de temizledim: akış sütunundaki fazla boşlukları kaldırdım, IN/OUT bilgisini ayrı bir yön sütununa ayırdım ve boş satırları sildim. İş emri miktarı boş olan satırları silmedim çünkü bunlar parçayla ilgisi olmayan işlemler (yürüme, bekleme gibi), regresyona zaten girmeyecekler.
 
 ```{r}
 library(readxl)
@@ -127,15 +127,13 @@ Raf yerleşim ve ayrıştırma için standart zaman yaklaşık 55 saniye çıkt�
 
 ## Regresyon: Parça Miktarı Süreyi Açıklıyor mu?
 
-Bu bölümde Design of Engineering Experiments ve Data Mining dersinde öğrendiğim doğrusal regresyon yaklaşımını kendi
-sahadan topladığım veriye uyguladım. Her aktivite için ayrı model kurdum çünkü
-işlemlerin doğası farklı, tek modelde birleştirmek yanıltıcı olurdu.
+Bu bölümde Design of Engineering Experiments ve Data Mining dersinde öğrendiğim doğrusal regresyon yaklaşımını kendi sahadan topladığım veriye uyguladım. Her aktivite için ayrı model kurdum çünkü işlemlerin doğası farklı, tek modelde birleştirmek yanıltıcı olurdu.
 
-Model: süre = b0 + b1 x Parça
+Model: süre = b0 + b1 x İş emri
 
 Katsayıları en küçük kareler (least squares) yöntemiyle tahmin ettim. Bu yöntem, saçılım grafiğindeki noktalara öyle bir doğru arıyor ki gözlenen değerler ile doğrunun tahmin ettiği değerler arasındaki farkların (artıkların) kareleri toplamı minimum olsun. R'da `lm()` fonksiyonu bu hesabı yapıyor.
 
-Katsayının anlamlı olup olmadığını da hipotez testiyle kontrol ettim. Sıfır hipotezi H0: b1 = 0, yani parça miktarının süre üzerinde etkisi yok; alternatif hipotez H1: b1 ≠ 0, yani etkisi var. Çıktıdaki p-değeri, H0 doğru olsaydı elimdeki kadar güçlü bir ilişkiyi tesadüfen görme olasılığı. p-değeri 0.05'in altındaysa H0'ı reddedip katsayının istatistiksel olarak anlamlı olduğuna karar veriyorum.
+Katsayının anlamlı olup olmadığını da hipotez testiyle kontrol ettim. Sıfır hipotezi H0: b1 = 0, yani iş emri miktarının süre üzerinde etkisi yok; alternatif hipotez H1: b1 ≠ 0, yani etkisi var. Çıktıdaki p-değeri, H0 doğru olsaydı elimdeki kadar güçlü bir ilişkiyi tesadüfen görme olasılığı. p-değeri 0.05'in altındaysa H0'ı reddedip katsayının istatistiksel olarak anlamlı olduğuna karar veriyorum.
 
 Modele geçmeden önce ilişkinin yönünü görmek için korelasyonlara baktım.
 
@@ -154,9 +152,7 @@ korelasyon <- data.frame(
 knitr::kable(korelasyon, caption = "Parça miktarı ile süre arasındaki korelasyon")
 ```
 
-Üçünde de pozitif ve orta kuvvette ilişki var. Şimdi modelleri kuruyorum. Süre
-verisi sağa çarpık olduğu için her aktivitede iki model denedim: düz model ve
-log dönüşümlü model. İkisini R² üzerinden karşılaştırdım.
+Üçünde de pozitif ve orta kuvvette ilişki var. Şimdi modelleri kuruyorum. Süre verisi sağa çarpık olduğu için her aktivitede iki model denedim: düz model ve log dönüşümlü model. İkisini R² üzerinden karşılaştırdım.
 
 ```{r}
 model_raf <- lm(sure ~ parca, data = raf)
@@ -206,16 +202,11 @@ plot(ara$parca, ara$sure, pch = 19, col = "gray40",
 abline(model_ara, col = "red", lwd = 2)
 ```
 
-Üç modelde de p-değerleri 0.05'in çok altında çıktı, yani üç aktivitede de H0'ı reddediyorum: Parça katsayısı istatistiksel olarak anlamlı (hepsinde p < 0.01).
-Katsayılara göre her ek parça raf yerleşim süresine yaklaşık 5 sn, ayrıştırmaya
-5,2 sn, aramaya ise 27 sn ekliyor. Aramadaki katsayının bu kadar büyük olması
-saha gözlemimle de uyuşuyor: sipariş ne kadar çok kalem içeriyorsa o kadar çok
-rafta raf içi kontrol yapmak gerekiyor.
+Üç modelde de p-değerleri 0.05'in çok altında çıktı, yani üç aktivitede de H0'ı reddediyorum: İş emri katsayısı istatistiksel olarak anlamlı (hepsinde p \< 0.01). Katsayılara göre her ek iş emri raf yerleşim süresine yaklaşık 5 sn, ayrıştırmaya 5,2 sn, aramaya ise 27 sn ekliyor. Aramadaki katsayının bu kadar büyük olması saha gözlemimle de uyuşuyor: sipariş ne kadar çok kalem içeriyorsa o kadar çok rafta raf içi kontrol yapmak gerekiyor.
 
-R² değerleri ise 0,21 ile 0,45 arasında; yani parça miktarı anlamlı bir açıklayıcı olsa da tek başına yeterli değil. Bu sonuç benim açımdan öğretici oldu, çünkü analize başlarken beklentim farklıydı: parça miktarının özellikle ayrıştırmada etkili olacağını, raf yerleşiminde ise sürenin daha çok raf mesafesi ve raf seviyesi gibi ölçme imkanım olmayan değişkenlere bağlı olduğunu, parça miktarının belirleyici olmadığını düşünüyordum. Sonuçlar bu beklentiyi kısmen düzeltti: parça miktarı raf yerleşiminde de anlamlı çıktı. Ancak R²'nin 0,21'de kalması, yani değişkenliğin yaklaşık %79'unun modelle açıklanamaması, asıl belirleyicilerin mesafe ve raf seviyesi olduğu yönündeki sezgimle tutarlı. Bu değişkenleri ölçemediğim için bu kısım bir bulgu değil, gelecek çalışma için bir hipotez. Ayrıca yürüme sürelerinin aktivite sürelerine gömülü ölçülmesi de açıklanamayan değişkenliğin bir kısmını oluşturuyor olabilir. Log dönüşümü karşılaştırmasında ise sadece ayrıştırmada uyum belirgin şekilde iyileşti (0,29'dan 0,35'e), diğer ikisinde düz model yeterli.
+R² değerleri ise 0,21 ile 0,45 arasında; yani iş emri miktarı anlamlı bir açıklayıcı olsa da tek başına yeterli değil. Bu sonuç benim açımdan öğretici oldu, çünkü analize başlarken beklentim farklıydı: iş emri miktarının özellikle ayrıştırmada etkili olacağını, raf yerleşiminde ise sürenin daha çok raf mesafesi ve raf seviyesi gibi ölçme imkanım olmayan değişkenlere bağlı olduğunu, iş emri miktarının belirleyici olmadığını düşünüyordum. Sonuçlar bu beklentiyi kısmen düzeltti: iş emri miktarı raf yerleşiminde de anlamlı çıktı. Ancak R²'nin 0,21'de kalması, yani değişkenliğin yaklaşık %79'unun modelle açıklanamaması, asıl belirleyicilerin mesafe ve raf seviyesi olduğu yönündeki sezgimle tutarlı. Bu değişkenleri ölçemediğim için bu kısım bir bulgu değil, gelecek çalışma için bir hipotez. Ayrıca yürüme sürelerinin aktivite sürelerine gömülü ölçülmesi de açıklanamayan değişkenliğin bir kısmını oluşturuyor olabilir. Log dönüşümü karşılaştırmasında ise sadece ayrıştırmada uyum belirgin şekilde iyileşti (0,29'dan 0,35'e), diğer ikisinde düz model yeterli.
 
-Son olarak derste model varsayımlarını kontrol etmenin önemini görmüştük, o
-yüzden artık (residual) grafiğine baktım.
+Son olarak derste model varsayımlarını kontrol etmenin önemini görmüştük, o yüzden artık (residual) grafiğine baktım.
 
 ```{r}
 #| fig-cap: "Raf yerleşim modeli artık grafiği"
@@ -224,10 +215,7 @@ plot(fitted(model_raf), resid(model_raf), pch = 19, col = "gray40",
 abline(h = 0, lty = 2, col = "red")
 ```
 
-Artık grafiğinde büyük tahmin değerlerinde saçılımın arttığı görülüyor
-(heteroskedastisite). Bu, sabit varyans varsayımının tam sağlanmadığını ve
-modelin büyük parça miktarlarında daha az güvenilir olduğunu gösteriyor. Bu da
-aslında log dönüşümü gibi alternatifleri denememin sebebiydi.
+Artık grafiğinde büyük tahmin değerlerinde saçılımın arttığı görülüyor (heteroskedastisite). Bu, sabit varyans varsayımının tam sağlanmadığını ve modelin yüksek iş emri sayılarında daha az güvenilir olduğunu gösteriyor. Bu da aslında log dönüşümü gibi alternatifleri denememin sebebiydi.
 
 ## IN ve OUT Süreçlerinin Karşılaştırması
 
@@ -243,11 +231,12 @@ barplot(in_t / 60,  las = 2, col = "lightblue", main = "IN",  ylab = "toplam dk"
 barplot(out_t / 60, las = 2, col = "orange",    main = "OUT", ylab = "toplam dk",
         cex.names = 0.7)
 ```
+
 İki süreç birbirinden çok farklı davranıyor. IN tarafı (224 gözlem) kısa ve öngörülebilir işlemlerden oluşuyor: raf yerleşim ve ayrıştırma medyanları 37-43 saniye. OUT tarafında ise (39 gözlem) zamanın büyük kısmı aramaya gidiyor. OUT sürecini daha az gözlemleyebildiğim için bu taraftaki bulgular IN'e göre daha az kesin.
 
 ## Sonuç ve Öneriler
 
-- Toplam sürenin %47'si parça arama faaliyetine harcanıyor. En yüksek etkili iyileştirme, depoda adresleme/lokasyon takip sisteminin iyileştirilmesi olur.
+- Toplam sürenin %47'si iş emri arama faaliyetine harcanıyor. En yüksek etkili iyileştirme, depoda adresleme/lokasyon takip sisteminin iyileştirilmesi olur.
 - Raf yerleşim ve ayrıştırma işlemleri için standart zaman yaklaşık 55 saniye olarak hesaplandı (%95 güven aralıklarıyla birlikte).
-- Parça miktarı işlem sürelerini anlamlı ama kısmi olarak açıklıyor. Gelecekte yapılacak bir etütte raf mesafesi, raf seviyesi ve ekipman kullanımı da kaydedilirse çok daha güçlü bir model kurulabilir.
+- İş emri miktarı işlem sürelerini anlamlı ama kısmi olarak açıklıyor. Gelecekte yapılacak bir etütte raf mesafesi, raf seviyesi ve ekipman kullanımı da kaydedilirse çok daha güçlü bir model kurulabilir.
 - OUT süreci için gözlem sayım azdı; sevkiyat tarafına odaklanan ek bir etüt yapılması faydalı olur.
