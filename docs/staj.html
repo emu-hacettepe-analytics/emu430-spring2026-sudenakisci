@@ -355,7 +355,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#keşifsel-veri-analizi-eda" id="toc-keşifsel-veri-analizi-eda" class="nav-link" data-scroll-target="#keşifsel-veri-analizi-eda">Keşifsel Veri Analizi (EDA)</a></li>
   <li><a href="#zaman-nereye-gidiyor-pareto-analizi" id="toc-zaman-nereye-gidiyor-pareto-analizi" class="nav-link" data-scroll-target="#zaman-nereye-gidiyor-pareto-analizi">Zaman Nereye Gidiyor? (Pareto Analizi)</a></li>
   <li><a href="#standart-zaman-analizi" id="toc-standart-zaman-analizi" class="nav-link" data-scroll-target="#standart-zaman-analizi">Standart Zaman Analizi</a></li>
-  <li><a href="#regresyon-parça-miktarı-süreyi-açıklıyor-mu" id="toc-regresyon-parça-miktarı-süreyi-açıklıyor-mu" class="nav-link" data-scroll-target="#regresyon-parça-miktarı-süreyi-açıklıyor-mu">Regresyon: Parça Miktarı Süreyi Açıklıyor mu?</a></li>
+  <li><a href="#regresyon-iş-emri-miktarı-süreyi-açıklıyor-mu" id="toc-regresyon-iş-emri-miktarı-süreyi-açıklıyor-mu" class="nav-link" data-scroll-target="#regresyon-iş-emri-miktarı-süreyi-açıklıyor-mu">Regresyon: İş Emri Miktarı Süreyi Açıklıyor mu?</a></li>
   <li><a href="#in-ve-out-süreçlerinin-karşılaştırması" id="toc-in-ve-out-süreçlerinin-karşılaştırması" class="nav-link" data-scroll-target="#in-ve-out-süreçlerinin-karşılaştırması">IN ve OUT Süreçlerinin Karşılaştırması</a></li>
   <li><a href="#sonuç-ve-öneriler" id="toc-sonuç-ve-öneriler" class="nav-link" data-scroll-target="#sonuç-ve-öneriler">Sonuç ve Öneriler</a></li>
   </ul>
@@ -391,7 +391,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="proje-hakkında" class="level2">
 <h2 class="anchored" data-anchor-id="proje-hakkında">Proje Hakkında</h2>
-<p>Staj yaptığım firmanın crossdock deposunda 5 iş günü boyunca zaman etüdü yaptım. Operasyondaki işlemleri kronometreyle ölçtüm ve her gözlem için tarih, akış (IN/OUT), iş emri miktarı, aktivite türü, süre ve çalışan kişi sayısını kaydettim. Toplamda 263 gözlem topladım.</p>
+<p>Staj yaptığım firmanın crossdock deposunda 8 iş günü boyunca zaman etüdü yaptım. Operasyondaki işlemleri kronometreyle ölçtüm ve her gözlem için tarih, akış (IN/OUT), iş emri miktarı, aktivite türü, süre ve çalışan kişi sayısını kaydettim. Toplamda 263 gözlem topladım.</p>
 <p>Bu sayfada verinin analizini R ile yaptım. Amacım üç soruya cevap bulmaktı:</p>
 <ol type="1">
 <li>Depoda zaman en çok hangi işlemlere gidiyor?</li>
@@ -401,7 +401,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="veri-hazırlığı" class="level2">
 <h2 class="anchored" data-anchor-id="veri-hazırlığı">Veri Hazırlığı</h2>
-<p>Ham veriyi önce Excel’de temizledim: akış sütunundaki fazla boşlukları kaldırdım, IN/OUT bilgisini ayrı bir yön sütununa ayırdım ve boş satırları sildim. İş emri miktarı boş olan satırları silmedim çünkü bunlar parçayla ilgisi olmayan işlemler (yürüme, bekleme gibi), regresyona zaten girmeyecekler.</p>
+<p>Ham veriyi önce Excel’de temizledim: akış sütunundaki fazla boşlukları kaldırdım, IN/OUT bilgisini ayrı bir yön sütununa ayırdım ve boş satırları sildim. İş emri miktarı boş olan satırları silmedim çünkü bunlar iş emriyle ilgisi olmayan işlemler (yürüme, bekleme gibi), regresyona zaten girmeyecekler.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Kodu göster</summary>
@@ -702,7 +702,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="standart-zaman-analizi" class="level2">
 <h2 class="anchored" data-anchor-id="standart-zaman-analizi">Standart Zaman Analizi</h2>
 <p>Standart zaman hesabında allowance oranını varsayımla seçmek yerine kendi verimden hesapladım: gözlemlediğim kayıp zamanların (bekleme, yürüme, yardım) verimli zamana oranı %3,9 çıktı. Literatürde kişisel ihtiyaç ve yorgunluk payıyla birlikte %9-15 kullanıldığını da not etmek lazım, benim oranım sadece ölçebildiğim kayıpları kapsıyor. Ayrıca sahada fark ettiğim bir durum bu oranı daha da aşağı çekiyor: yürüme çoğu zaman ayrı bir faaliyet olarak değil, başka işlerle eş zamanlı gerçekleşiyordu. Örneğin çalışanlar parçayı sisteme kaydetme işini yürürken tamamlıyordu; bu yüzden yürümeyi çoğunlukla ayrı ölçemedim ve bu süreler ilgili aktivitelerin süresinin içine karıştı. Dolayısıyla hesapladığım allowance gerçek kayıp zamanın alt sınırı olarak görülmeli.</p>
-<p>Standart zamanı sadece yeterli gözlemi olan üç aktivite için hesapladım. Diğer aktivitelerde gözlem sayısı 11’in altında kaldığı için güven aralığı hesaplamak istatistiksel olarak doğru olmazdı.</p>
+<p>Standart zamanı sadece yeterli gözlemi olan üç aktivite için hesapladım. Diğer aktivitelerde gözlem sayısı 20’nin altında kaldığı için güven aralığı hesaplamak istatistiksel olarak doğru olmazdı.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Kodu göster</summary>
@@ -769,8 +769,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Raf yerleşim ve ayrıştırma için standart zaman yaklaşık 55 saniye çıktı. Arama için hesaplanan 827 saniyelik değer ise bir standart olmaktan çok, sürecin ne kadar kontrolsüz olduğunun göstergesi (güven aralığı 457-1134 sn arasında, çok geniş).</p>
 </section>
-<section id="regresyon-parça-miktarı-süreyi-açıklıyor-mu" class="level2">
-<h2 class="anchored" data-anchor-id="regresyon-parça-miktarı-süreyi-açıklıyor-mu">Regresyon: Parça Miktarı Süreyi Açıklıyor mu?</h2>
+<section id="regresyon-iş-emri-miktarı-süreyi-açıklıyor-mu" class="level2">
+<h2 class="anchored" data-anchor-id="regresyon-iş-emri-miktarı-süreyi-açıklıyor-mu">Regresyon: İş Emri Miktarı Süreyi Açıklıyor mu?</h2>
 <p>Bu bölümde Design of Engineering Experiments ve Data Mining dersinde öğrendiğim doğrusal regresyon yaklaşımını kendi sahadan topladığım veriye uyguladım. Her aktivite için ayrı model kurdum çünkü işlemlerin doğası farklı, tek modelde birleştirmek yanıltıcı olurdu.</p>
 <p>Model: süre = b0 + b1 x İş emri</p>
 <p>Katsayıları en küçük kareler (least squares) yöntemiyle tahmin ettim. Bu yöntem, saçılım grafiğindeki noktalara öyle bir doğru arıyor ki gözlenen değerler ile doğrunun tahmin ettiği değerler arasındaki farkların (artıkların) kareleri toplamı minimum olsun. R’da <code>lm()</code> fonksiyonu bu hesabı yapıyor.</p>
@@ -790,11 +790,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>                       <span class="fu">cor</span>(ayr<span class="sc">$</span>parca, ayr<span class="sc">$</span>sure),</span>
 <span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>                       <span class="fu">cor</span>(ara<span class="sc">$</span>parca, ara<span class="sc">$</span>sure)), <span class="dv">2</span>))</span>
 <span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(korelasyon, <span class="at">caption =</span> <span class="st">"Parça miktarı ile süre arasındaki korelasyon"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(korelasyon, <span class="at">caption =</span> <span class="st">"İş emri miktarı ile süre arasındaki korelasyon"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
-<caption>Parça miktarı ile süre arasındaki korelasyon</caption>
+<caption>İş emri miktarı ile süre arasındaki korelasyon</caption>
 <thead>
 <tr class="header">
 <th style="text-align: left;">aktivite</th>
@@ -922,13 +922,13 @@ F-statistic: 31.23 on 1 and 115 DF,  p-value: 1.563e-07</code></pre>
 <summary>Kodu göster</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>))</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(raf<span class="sc">$</span>parca, raf<span class="sc">$</span>sure, <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">col =</span> <span class="st">"gray40"</span>,</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Parça"</span>, <span class="at">ylab =</span> <span class="st">"süre (sn)"</span>, <span class="at">main =</span> <span class="st">"raf yerleşim"</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"İş emri"</span>, <span class="at">ylab =</span> <span class="st">"süre (sn)"</span>, <span class="at">main =</span> <span class="st">"raf yerleşim"</span>)</span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(model_raf, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ayr<span class="sc">$</span>parca, ayr<span class="sc">$</span>sure, <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">col =</span> <span class="st">"gray40"</span>,</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Parça"</span>, <span class="at">ylab =</span> <span class="st">"süre (sn)"</span>, <span class="at">main =</span> <span class="st">"ayrıştırma"</span>)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"İş emri"</span>, <span class="at">ylab =</span> <span class="st">"süre (sn)"</span>, <span class="at">main =</span> <span class="st">"ayrıştırma"</span>)</span>
 <span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(model_ayr, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
 <span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ara<span class="sc">$</span>parca, ara<span class="sc">$</span>sure, <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">col =</span> <span class="st">"gray40"</span>,</span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Parça"</span>, <span class="at">ylab =</span> <span class="st">"süre (sn)"</span>, <span class="at">main =</span> <span class="st">"arama"</span>)</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"İş emri"</span>, <span class="at">ylab =</span> <span class="st">"süre (sn)"</span>, <span class="at">main =</span> <span class="st">"arama"</span>)</span>
 <span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(model_ara, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">

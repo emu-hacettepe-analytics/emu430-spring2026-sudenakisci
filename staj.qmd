@@ -13,7 +13,7 @@ execute:
 
 ## Proje Hakkında
 
-Staj yaptığım firmanın crossdock deposunda 5 iş günü boyunca zaman etüdü yaptım. Operasyondaki işlemleri kronometreyle ölçtüm ve her gözlem için tarih, akış (IN/OUT), iş emri miktarı, aktivite türü, süre ve çalışan kişi sayısını kaydettim. Toplamda 263 gözlem topladım.
+Staj yaptığım firmanın crossdock deposunda 8 iş günü boyunca zaman etüdü yaptım. Operasyondaki işlemleri kronometreyle ölçtüm ve her gözlem için tarih, akış (IN/OUT), iş emri miktarı, aktivite türü, süre ve çalışan kişi sayısını kaydettim. Toplamda 263 gözlem topladım.
 
 Bu sayfada verinin analizini R ile yaptım. Amacım üç soruya cevap bulmaktı:
 
@@ -23,7 +23,7 @@ Bu sayfada verinin analizini R ile yaptım. Amacım üç soruya cevap bulmaktı:
 
 ## Veri Hazırlığı
 
-Ham veriyi önce Excel'de temizledim: akış sütunundaki fazla boşlukları kaldırdım, IN/OUT bilgisini ayrı bir yön sütununa ayırdım ve boş satırları sildim. İş emri miktarı boş olan satırları silmedim çünkü bunlar parçayla ilgisi olmayan işlemler (yürüme, bekleme gibi), regresyona zaten girmeyecekler.
+Ham veriyi önce Excel'de temizledim: akış sütunundaki fazla boşlukları kaldırdım, IN/OUT bilgisini ayrı bir yön sütununa ayırdım ve boş satırları sildim. İş emri miktarı boş olan satırları silmedim çünkü bunlar iş emriyle ilgisi olmayan işlemler (yürüme, bekleme gibi), regresyona zaten girmeyecekler.
 
 ```{r}
 library(readxl)
@@ -100,7 +100,7 @@ Depoda iş emri takibi raf seviyesinde yapılmaktadır; parçanın hangi rafta o
 
 Standart zaman hesabında allowance oranını varsayımla seçmek yerine kendi verimden hesapladım: gözlemlediğim kayıp zamanların (bekleme, yürüme, yardım) verimli zamana oranı %3,9 çıktı. Literatürde kişisel ihtiyaç ve yorgunluk payıyla birlikte %9-15 kullanıldığını da not etmek lazım, benim oranım sadece ölçebildiğim kayıpları kapsıyor. Ayrıca sahada fark ettiğim bir durum bu oranı daha da aşağı çekiyor: yürüme çoğu zaman ayrı bir faaliyet olarak değil, başka işlerle eş zamanlı gerçekleşiyordu. Örneğin çalışanlar parçayı sisteme kaydetme işini yürürken tamamlıyordu; bu yüzden yürümeyi çoğunlukla ayrı ölçemedim ve bu süreler ilgili aktivitelerin süresinin içine karıştı. Dolayısıyla hesapladığım allowance gerçek kayıp zamanın alt sınırı olarak görülmeli.
 
-Standart zamanı sadece yeterli gözlemi olan üç aktivite için hesapladım. Diğer aktivitelerde gözlem sayısı 11'in altında kaldığı için güven aralığı hesaplamak istatistiksel olarak doğru olmazdı.
+Standart zamanı sadece yeterli gözlemi olan üç aktivite için hesapladım. Diğer aktivitelerde gözlem sayısı 20'nin altında kaldığı için güven aralığı hesaplamak istatistiksel olarak doğru olmazdı.
 
 ```{r}
 kayip <- sum(df$sure[df$aktivite %in% c("idle time", "yürüme", "yardım")])
@@ -125,7 +125,7 @@ knitr::kable(st_tablo, caption = "Standart zamanlar (sn), allowance = %3.9")
 
 Raf yerleşim ve ayrıştırma için standart zaman yaklaşık 55 saniye çıktı. Arama için hesaplanan 827 saniyelik değer ise bir standart olmaktan çok, sürecin ne kadar kontrolsüz olduğunun göstergesi (güven aralığı 457-1134 sn arasında, çok geniş).
 
-## Regresyon: Parça Miktarı Süreyi Açıklıyor mu?
+## Regresyon: İş Emri Miktarı Süreyi Açıklıyor mu?
 
 Bu bölümde Design of Engineering Experiments ve Data Mining dersinde öğrendiğim doğrusal regresyon yaklaşımını kendi sahadan topladığım veriye uyguladım. Her aktivite için ayrı model kurdum çünkü işlemlerin doğası farklı, tek modelde birleştirmek yanıltıcı olurdu.
 
@@ -149,7 +149,7 @@ korelasyon <- data.frame(
                        cor(ayr$parca, ayr$sure),
                        cor(ara$parca, ara$sure)), 2))
 
-knitr::kable(korelasyon, caption = "Parça miktarı ile süre arasındaki korelasyon")
+knitr::kable(korelasyon, caption = "İş emri miktarı ile süre arasındaki korelasyon")
 ```
 
 Üçünde de pozitif ve orta kuvvette ilişki var. Şimdi modelleri kuruyorum. Süre verisi sağa çarpık olduğu için her aktivitede iki model denedim: düz model ve log dönüşümlü model. İkisini R² üzerinden karşılaştırdım.
@@ -192,13 +192,13 @@ summary(model_raf)
 #| fig-cap: "Parça miktarı ile süre ilişkisi (kırmızı: regresyon doğrusu)"
 par(mfrow = c(1, 3))
 plot(raf$parca, raf$sure, pch = 19, col = "gray40",
-     xlab = "Parça", ylab = "süre (sn)", main = "raf yerleşim")
+     xlab = "İş emri", ylab = "süre (sn)", main = "raf yerleşim")
 abline(model_raf, col = "red", lwd = 2)
 plot(ayr$parca, ayr$sure, pch = 19, col = "gray40",
-     xlab = "Parça", ylab = "süre (sn)", main = "ayrıştırma")
+     xlab = "İş emri", ylab = "süre (sn)", main = "ayrıştırma")
 abline(model_ayr, col = "red", lwd = 2)
 plot(ara$parca, ara$sure, pch = 19, col = "gray40",
-     xlab = "Parça", ylab = "süre (sn)", main = "arama")
+     xlab = "İş emri", ylab = "süre (sn)", main = "arama")
 abline(model_ara, col = "red", lwd = 2)
 ```
 
